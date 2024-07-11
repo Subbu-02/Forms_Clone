@@ -1,0 +1,421 @@
+/* General Reset and Body */
+*, *::before, *::after, html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f0f4f7;
+}
+
+/* Header and Navbar */
+#header-nav {
+    width: 100%;
+    background-color: #0195db;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    border: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 0%;
+}
+
+.glyphicon {
+    filter: brightness(0) invert(1);
+}
+
+.navbar-brand img {
+    filter: brightness(0) invert(1);
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: transparent;
+    opacity: 0.7;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    background-color: transparent;
+    opacity: 0.7;
+}
+
+.navbar-header {
+    height: 64px;
+    border-radius: 0%;
+}
+
+.container-fluid {
+    padding: 0 20px;
+}
+
+.navbar-header, .navbar-right {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-brand {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-brand p {
+    color: #000;
+    text-transform: uppercase;
+    font-size: 1em;
+    padding: 0 15px;
+    margin-top: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.navbar-brand p a {
+    padding: 10px;
+    vertical-align: center;
+    font-size: 1em;
+}
+
+.navbar-brand p .glyphicon {
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1em;
+}
+
+.navbar-brand p img {
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-brand p input {
+    width: 75px;
+    border-radius: 3px;
+    border: 1px solid #61122f;
+    padding: 5px 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.navbar-right {
+    margin-top: 10px;
+    float: right;
+}
+
+.navbar-right .nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right .nav li {
+    margin-left: 10px;
+}
+
+.glyphicon {
+    font-size: 1.5em;
+    color: grey;
+}
+
+.navbar-right .nav li a button {
+    color: #000;
+    font-size: 1em;
+    background-color: #149b9b;
+}
+
+.navbar-right .nav li a img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Navbar Tabs */
+.navbar-tabs {
+    display: flex;
+    justify-content: center;
+    background-color: #1b263a;
+}
+
+.nav-tabs {
+    border: none;
+}
+
+.nav-tabs > li > a {
+    margin: 0 auto;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #1b263a;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    border: none;
+    border-radius: 0%;
+    border-bottom: 5px solid #1b263a;
+    border-top: 5px solid #1b263a;
+    background-color: #0195db;
+    color: #fff;
+}
+
+.nav-tabs > li.disabled > a {
+    border: none;
+    margin-top: 5px;
+    border-radius: 0%;
+    color: #fff;
+}
+
+.nav-tabs > li > a:hover {
+    background-color: #ddd;
+}
+
+.nav-tabs > li.disabled > a:hover {
+    cursor: not-allowed;
+    background-color: #d3d3d3;
+}
+
+.nav-tabs > li.disabled > a.hover-only:hover {
+    cursor: default;
+    background-color: #ddd;
+}
+
+/* Form Container and Card */
+.form-container {
+    margin-top: 20px;
+    padding: 20px;
+    padding-bottom: 10px;
+    background-color: #0195db;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-card {
+    background-color: #e7e7e7;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-header {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.form-title {
+    font-size: 24px;
+    margin: 0;
+}
+
+.form-description {
+    color: #666;
+    margin-top: 5px;
+}
+
+.form-body {
+    padding: 15px;
+}
+
+/* Form Group and Options */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-question {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.question-type {
+    margin-top: 10px;
+}
+
+.form-options {
+    margin-top: 10px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.option input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.option button {
+    background-color: transparent;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+}
+
+.option button:hover {
+    color: #bd2130;
+}
+
+.form-actions {
+    margin-top: 10px;
+    text-align: right;
+}
+
+/* Buttons */
+.required-btn.btn-success {
+    background-color: green;
+    color: white;
+}
+
+.delete-btn, .duplicate-btn {
+    margin: 0 10px;
+    padding: 5px 10px;
+    border: none;
+    /* background-color: #dc3545; */
+    color: gray;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.duplicate-btn{
+    background-color: #d3d3d3;
+}
+
+.delete-btn .glyphicon, .duplicate-btn .glyphicon {
+    font-size: 16px;
+    vertical-align: middle;
+    color: #000;
+}
+
+.delete-btn:hover{
+    background-color: #c82333;
+}
+
+.duplicate-btn:hover {
+    background-color: #666;
+}
+
+/* Show the Add Question Button Only in the Selected Question */
+.question-container.selected .add-question-btn {
+    display: inline-block;
+}
+
+.add-question-container {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.add-question-btn {
+    font-size: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #d3d3d3;
+    color: white;
+}
+
+.add-question-btn:hover {
+    background-color: #666;
+}
+
+.add-question-btn .glyphicon {
+    margin: 2px 0 2px 2px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Selected Question Styling */
+.form-group.selected {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.question-container {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.question-container:hover {
+    border-color: #bbb;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.question-container.selected {
+    border: 2px solid #007bff;
+    background-color: #f7f9fc;
+}
+
+.question-container .form-actions {
+    display: none;
+}
+
+.question-container.selected .form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add-option, .add-other {
+    margin-top: 10px;
+    margin-right: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #d3d3d3;
+    color: white;
+    cursor: pointer;
+}
+
+.add-option:hover, .add-other:hover {
+    background-color: #bbb;
+}
+
+/* Updated Styles for Options */
+.form-options {
+    margin-top: 10px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.option input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.option button {
+    background-color: transparent;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+}
+
+.option button:hover {
+    color: #bd2130;
+}
+
+/* Ensure the Add Question Button is Hidden by Default */
+.add-question-btn {
+    display: none;
+}
+
+/* Show the Add Question Button Only in the Selected Question */
+.question-container.selected .add-question-btn {
+    display: inline-block;
+}
