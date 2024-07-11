@@ -23,7 +23,7 @@ body {
 }
 
 .glyphicon {
-    filter: brightness(0) invert(1);
+    /* filter: brightness(0) invert(1); */
 }
 
 .navbar-brand img {
@@ -115,6 +115,10 @@ a:hover {
 
 .navbar-right .nav li {
     margin-left: 10px;
+}
+
+.navbar-right .nav li a {
+    color: #1b263a;
 }
 
 .glyphicon {
