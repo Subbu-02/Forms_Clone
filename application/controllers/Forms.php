@@ -2,24 +2,40 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Forms extends CI_Controller {
+	public function home() {
+		$this->session->set_userdata('current_page', 'home');
+        $data['forms'] = $this->FormModel->get_forms($this->session->userdata('user_id'));
+        $this->load->view('Templates/header');
+        $this->load->view('home', $data);
+        $this->load->view('Templates/footer');
+    }
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/userguide3/general/urls.html
-	 */
 	public function edit()
 	{
+		$this->session->set_userdata('current_page', 'edit');
+		$this->load->view('Templates/header');
 		$this->load->view('edit');
+		$this->load->view('Templates/footer');
 	}
+
+    public function create() {
+        // Load form creation view
+		$this->session->set_userdata('current_page', 'create');
+        $this->load->view('Templates/header');
+        $this->load->view('create');
+        $this->load->view('Templates/footer');
+    }
+
+	public function save() {
+		$this->session->set_userdata('current_page', 'create');
+		$data = array(
+			'user_id' => $this->session->userdata('user_id'),
+			'form_title' => $this->input->post('title'),
+			'form_description' => $this->input->post('description'),
+			'status' => 'draft'
+		);
+	
+		$this->FormModel->save_form($data);
+		redirect('home');
+	}	
 }

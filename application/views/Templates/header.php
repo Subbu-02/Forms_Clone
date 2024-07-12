@@ -20,7 +20,7 @@
                     <div class="navbar-brand">
                         <p>
                             <img src="http://localhost/Forms_Clone/assets/images/aissel_logo.png" alt="Logo">
-                            <input type="text" class="form-control" jsname="YPqjbf" autocomplete="off" tabindex="0" aria-label="Document title" value="Untitled form" dir="auto" data-initial-dir="auto" data-initial-value="Untitled form" maxlength="25"> 
+                            <!-- <input type="text" class="form-control" jsname="YPqjbf" autocomplete="off" tabindex="0" aria-label="Document title" value="Untitled form" dir="auto" data-initial-dir="auto" data-initial-value="Untitled form" maxlength="25">  -->
                             <!-- <a href="#" title="Save to Drive"><span class="glyphicon glyphicon-folder-open"></span></a>
                             <a href="#" title="Star Document" onclick="toggleStar()"><span id="star-icon" class="glyphicon glyphicon-star" aria-hidden="true"></span></a> -->
                         </p>
@@ -32,12 +32,24 @@
                             <li><a href="<?php echo base_url(); ?>users/login">Login</a></li>
                             <li><a href="<?php echo base_url(); ?>users/register">Register</a></li>
                         <?php endif; ?>
+                        <?php if($this->session->userdata('logged_in')) : ?>
+                            <!-- <li><a href="<?php echo base_url(); ?>posts/create">Create Post</a></li>
+                            <li><a href="<?php echo base_url(); ?>categories/create">Create Category</a></li> -->
+                            <?php if ($this->session->userdata('current_page') == 'home'): ?>
+                            <li>
+                                <a href="<?php echo site_url('create'); ?>" class="btn btn-primary" style="color: #fff;">Create Form</a>
+                            </li>
+                            <?php endif; ?>
+                            <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
+                            <!-- <li><a href="#"><img src="http://localhost/Forms_Clone/assets/images/Subbu.png" alt="Subbu"></a></li> -->
+                            <li><a href="#"><span class="glyphicon glyphicon-user" style="font-size: 20px; color: #1b263a;" title="Profile"></span></a></li>
+                        <?php endif; ?>
                         <!-- <li><a href="view_form.html" target="_blank" title="View Form"><span class="glyphicon glyphicon-eye-open"></span></a></li>
                         <li><a href="#" title="Back"><span class="glyphicon glyphicon-step-backward"></span></a></li>
                         <li><a href="#" title="Next"><span class="glyphicon glyphicon-step-forward"></span></a></li>
                         <li><a href="#"><button type="button" class="btn btn-primary">Send</button></a></li>
-                        <li><a href="#" title="Options"><span class="glyphicon glyphicon-option-vertical"></span></a></li>
-                        <li><a href="#"><img src="http://localhost/Forms_Clone/assets/images/Subbu.png" alt="Subbu"></a></li> -->
+                        <li><a href="#" title="Options"><span class="glyphicon glyphicon-option-vertical"></span></a></li> -->
+                        
                     </ul>
                 </div>
             </div>
@@ -45,6 +57,10 @@
     </header>
 
     <div class="container">
+        <?php if($this->session->flashdata('user_registered')): ?>
+            <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_registered').'</p>'; ?>
+        <?php endif; ?>
+
         <?php if($this->session->flashdata('login_failed')): ?>
             <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('login_failed').'</p>'; ?>
         <?php endif; ?>

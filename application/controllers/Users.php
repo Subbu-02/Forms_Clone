@@ -16,9 +16,10 @@
             }
             else{
                 $enc_password = md5($this->input->post('password'));
+				// $enc_password = $this->input->post('password');
                 $this->UserModel->register($enc_password);
                 $this->session->set_flashdata('user_registered', 'You are now registered and can log in');
-                redirect('posts');
+                redirect('home');
             }
         }
 
@@ -33,11 +34,11 @@
 				$this->load->view('users/login', $data);
 				$this->load->view('Templates/footer');
 			} else {
-				
 				// Get username
 				$username = $this->input->post('username');
 				// Get and encrypt the password
 				$password = md5($this->input->post('password'));
+				// $password = $this->input->post('password');
 
 				// Login user
 				$user_id = $this->UserModel->login($username, $password);
@@ -55,7 +56,7 @@
 					// Set message
 					$this->session->set_flashdata('user_loggedin', 'You are now logged in');
 
-					redirect('posts');
+					redirect('home');
 				} else {
 					// Set message
 					$this->session->set_flashdata('login_failed', 'Login is invalid');

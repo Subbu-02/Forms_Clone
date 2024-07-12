@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,8 +15,8 @@
 <body>
     <header>
         <nav id="header-nav" class="navbar">
-            <div class="container-fluid">
-                <div class="navbar-header ">
+            <div class="container-fluid"> -->
+                <!-- <div class="navbar-header ">
                     <div class="navbar-brand">
                         <p>
                             <img src="http://localhost/Forms_Clone/assets/images/aissel_logo.png" alt="Logo">
@@ -25,8 +25,8 @@
                             <a href="#" title="Star Document" onclick="toggleStar()"><span id="star-icon" class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
                         </p>
                     </div>
-                </div>
-                <div class="navbar-right">
+                </div> -->
+                <!-- <div class="navbar-right">
                     <ul class="nav navbar-nav">
                         <li><a href="view_form.html" target="_blank" title="View Form"><span class="glyphicon glyphicon-eye-open"></span></a></li>
                         <li><a href="#" title="Back"><span class="glyphicon glyphicon-step-backward"></span></a></li>
@@ -36,7 +36,7 @@
                         <li><a href="#"><img src="http://localhost/Forms_Clone/assets/images/Subbu.png" alt="Subbu"></a></li>
                     </ul>
                 </div>
-            </div>
+            </div> -->
             <div class="navbar-tabs">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#">Questions</a></li>
@@ -50,8 +50,9 @@
     <div class="container form-container">
         <div class="form-card">
             <div class="form-header">
-                <h1 class="form-title">Untitled form</h1>
-                <p class="form-description">Form description</p>
+                <input type="text" class="form-title" id="form-title" value="Untitled form">
+                <br>
+                <input type="text" class="form-description" id="form-description" value="Form description">
             </div>
             <div class="form-body">
                 <form id="google-form-clone">
@@ -66,8 +67,8 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="http://localhost/Forms_Clone/assets/js/script.js"></script>
 </body>
-</html>
+</html> -->

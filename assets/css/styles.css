@@ -104,7 +104,7 @@ a:hover {
 }
 
 .navbar-right {
-    margin-top: 10px;
+    /* margin-top: 10px; */
     float: right;
 }
 
@@ -423,3 +423,37 @@ a:hover {
 .question-container.selected .add-question-btn {
     display: inline-block;
 }
+
+/* form-card methods */
+/* .form-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.form-card.published {
+    border-color: #28a745;
+}
+
+.form-card.draft {
+    border-color: #ffc107;
+} */
+
+/* home page */
+/* .form-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.form-card {
+    width: calc(50% - 10px);
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+} */
