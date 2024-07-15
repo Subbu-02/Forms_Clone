@@ -1,25 +1,44 @@
 $(document).ready(function () {
     let questionCount = 0;
 
-    function generateQuestionHtml(questionId) {
+    function generateQuestionHtml(questionId, questionData = null) {
+        const questionText = questionData ? questionData.text : `Question ${questionId}`;
+        const questionType = questionData ? questionData.type : 'multiple-choice';
+
+        let optionsHtml = '';
+        if (questionData && questionData.options) {
+            questionData.options.forEach((option, index) => {
+                optionsHtml += `
+                    <div class="option">
+                        <input type="text" class="form-control option-input" value="${option}">
+                        <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
+                    </div>
+                `;
+            });
+        } else if (['multiple-choice', 'checkboxes', 'dropdown'].includes(questionType)) {
+            optionsHtml = `
+                <div class="option">
+                    <input type="text" class="form-control option-input" placeholder="Option 1">
+                    <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
+                </div>
+                <button type="button" class="btn btn-secondary add-option" data-question-id="${questionId}">Add option</button>
+                ${questionType !== 'dropdown' ? `<button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>` : ''}
+            `;
+        }
+
         return `
             <div class="form-group question-container" id="question-${questionId}">
                 <div class="question-content">
-                    <input type="text" class="form-control form-question" placeholder="Question ${questionId}">
+                    <input type="text" class="form-control form-question" placeholder="${questionText}" value="${questionText}">
                     <select class="form-control question-type" data-question-id="${questionId}">
-                        <option value="multiple-choice">Multiple Choice</option>
-                        <option value="short-answer">Short Answer</option>
-                        <option value="paragraph">Paragraph</option>
-                        <option value="checkboxes">Checkboxes</option>
-                        <option value="dropdown">Dropdown</option>
+                        <option value="multiple-choice" ${questionType === 'multiple-choice' ? 'selected' : ''}>Multiple Choice</option>
+                        <option value="short-answer" ${questionType === 'short-answer' ? 'selected' : ''}>Short Answer</option>
+                        <option value="paragraph" ${questionType === 'paragraph' ? 'selected' : ''}>Paragraph</option>
+                        <option value="checkboxes" ${questionType === 'checkboxes' ? 'selected' : ''}>Checkboxes</option>
+                        <option value="dropdown" ${questionType === 'dropdown' ? 'selected' : ''}>Dropdown</option>
                     </select>
                     <div class="form-options" id="form-options-${questionId}">
-                        <div class="option">
-                            <input type="text" class="form-control option-input" placeholder="Option 1">
-                            <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
-                        </div>
-                        <button type="button" class="btn btn-secondary add-option" data-question-id="${questionId}">Add option</button>
-                        <button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>
+                        ${optionsHtml}
                     </div>
                 </div>
                 <div class="form-actions text-right">
@@ -38,9 +57,9 @@ $(document).ready(function () {
         `;
     }
 
-    function addQuestion(afterQuestionId) {
+    function addQuestion(afterQuestionId, questionData = null) {
         questionCount++;
-        const newQuestionHtml = generateQuestionHtml(questionCount);
+        const newQuestionHtml = generateQuestionHtml(questionCount, questionData);
 
         if (afterQuestionId) {
             $(`#question-${afterQuestionId}`).after(newQuestionHtml);
@@ -61,7 +80,6 @@ $(document).ready(function () {
         selectQuestion(questionId);
     });
 
-    // Prevent click event propagation to the container
     $(document).on('click', '.form-question, .question-type, .form-options, .form-actions button', function (e) {
         e.stopPropagation();
     });
@@ -119,9 +137,7 @@ $(document).ready(function () {
         const optionDiv = $(this).closest('.option');
         const questionId = $(this).data('question-id');
 
-        // Check if the option being removed is the 'Other' option
         if (optionDiv.find('input').val() === 'Other') {
-            // Re-add the "Add Other" button
             $(`#form-options-${questionId} .add-other`).remove();
             const addOtherButtonHtml = `<button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>`;
             $(`#form-options-${questionId} .add-option`).after(addOtherButtonHtml);
@@ -139,7 +155,7 @@ $(document).ready(function () {
             </div>
         `;
         $(this).before(otherOptionHtml);
-        $(this).remove(); // Remove the Add Other button after adding the Other option
+        $(this).remove();
     });
 
     $(document).on('click', '.add-question-btn', function () {
@@ -147,6 +163,11 @@ $(document).ready(function () {
         addQuestion(questionId);
     });
 
-    // Add a default multiple-choice question on document ready
-    addQuestion();
+    if (questionsFromDatabase && questionsFromDatabase.length > 0) {
+        questionsFromDatabase.forEach((questionData) => {
+            addQuestion(null, questionData);
+        });
+    } else {
+        addQuestion();
+    }
 });

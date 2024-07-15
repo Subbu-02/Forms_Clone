@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="http://localhost/Forms_Clone/assets/css/styles.css">
     <link href='https://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="http://localhost/Forms_Clone/assets/js/script.js"></script>
 </head>
 <body>
     <header>
@@ -18,8 +22,9 @@
             <div class="container-fluid">
                 <div class="navbar-header ">
                     <div class="navbar-brand">
-                        <p>
-                            <img src="http://localhost/Forms_Clone/assets/images/aissel_logo.png" alt="Logo">
+                        <p style="padding: 0;">
+                            <!-- The image should redirect to home page -->
+                            <a href="<?php echo base_url(); ?>home"><img src="http://localhost/Forms_Clone/assets/images/aissel_logo.png" alt="Logo"></a>
                             <!-- <input type="text" class="form-control" jsname="YPqjbf" autocomplete="off" tabindex="0" aria-label="Document title" value="Untitled form" dir="auto" data-initial-dir="auto" data-initial-value="Untitled form" maxlength="25">  -->
                             <!-- <a href="#" title="Save to Drive"><span class="glyphicon glyphicon-folder-open"></span></a>
                             <a href="#" title="Star Document" onclick="toggleStar()"><span id="star-icon" class="glyphicon glyphicon-star" aria-hidden="true"></span></a> -->
@@ -38,6 +43,16 @@
                             <?php if ($this->session->userdata('current_page') == 'home'): ?>
                             <li>
                                 <a href="<?php echo site_url('create'); ?>" class="btn btn-primary" style="color: #fff;">Create Form</a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if ($this->session->userdata('current_page') == 'edit'): ?>
+                            <li>
+                                <!-- I want a save draft button and this should save the form to the database and redirect to home page -->
+                                <a href="<?php echo base_url(); ?>forms/save" class="btn btn-warning">Save Draft</a>
+                            </li>
+                            <li>
+                                <!-- I want a publish button and this should save the form to the database and redirect to home page -->
+                                <a href="<?php echo base_url(); ?>forms/save" class="btn btn-success">Publish Form</a>
                             </li>
                             <?php endif; ?>
                             <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
