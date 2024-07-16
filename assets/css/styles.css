@@ -231,7 +231,7 @@ a:hover {
     margin-bottom: 20px;
 }
 
-.form-question {
+.form-question{
     width: 100%;
     border: none;
     border-bottom: 1px solid #ddd;
@@ -457,3 +457,16 @@ a:hover {
     border: 1px solid #ccc;
     border-radius: 10px;
 } */
+
+.option input[type="radio"], .option input[type="checkbox"] {
+    float: left;
+    margin-right: 10px;
+    margin: 0;
+}
+
+.option label {
+    display: inline-block;
+    width: calc(100% - 30px);
+    margin: 0; /* Adjust width to fit content after radio or checkbox */
+}
+

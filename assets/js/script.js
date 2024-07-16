@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let questionCount = 0;
+    let questionCount = numberOfQuestions -1;
 
     function generateQuestionHtml(questionId, questionData = null) {
         const questionText = questionData ? questionData.text : `Question ${questionId}`;

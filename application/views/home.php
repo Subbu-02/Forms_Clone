@@ -1,3 +1,21 @@
+<script>
+function confirmDeletion(formId) {
+    swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "<?= base_url('Forms/deleteForm/') ?>" + formId;
+        }
+    })
+}
+</script>
+
 <div class="container">
     <h1 style="text-align: center;">My Forms</h1>
     <div class="form-list" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; margin-bottom: 20px; justify-content: center;">
@@ -7,9 +25,12 @@
                 <p>Status: <?php echo ucfirst($form['status']); ?></p>
                 <a href="<?php echo site_url('forms/view/'.$form['form_id']); ?>" class="btn btn-primary">View</a>
                 <?php if ($form['status'] == 'draft'): ?>
-                    <a href="<?php echo site_url('forms/edit/'.$form['form_id']); ?>" class="btn btn-secondary" style="color: #1b263a;">Edit</a>
+                    <a href="<?php echo site_url('forms/edit/'.$form['form_id']); ?>" class="btn btn-primary" style="">Edit</a>
                 <?php endif; ?>
-                <!-- Insert line break -->
+                <?php if ($form['status'] == 'published'): ?>
+                    <a href="<?php echo site_url('forms/edit/'.$form['form_id']); ?>" class="btn btn-primary" style="">Responses</a>
+                <?php endif; ?>
+                <button onclick="confirmDeletion(<?= $form['form_id']; ?>)" class="btn btn-danger" style="justify-content:right">Delete Form</a>
             </div>
             <br>
         <?php endforeach; ?>

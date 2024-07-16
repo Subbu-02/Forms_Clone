@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="http://localhost/Forms_Clone/assets/css/styles.css">
     <link href='https://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="http://localhost/Forms_Clone/assets/js/script.js"></script>
 </head>
@@ -48,11 +49,11 @@
                             <?php if ($this->session->userdata('current_page') == 'edit'): ?>
                             <li>
                                 <!-- I want a save draft button and this should save the form to the database and redirect to home page -->
-                                <a href="<?php echo base_url(); ?>forms/save" class="btn btn-warning">Save Draft</a>
+                                <a href= "<?php echo base_url(); ?>forms/saveForm" id="save-form" class="btn btn-warning><button type="submit" id="save-form" class="btn btn-warning">Save Draft</button></a>
                             </li>
                             <li>
                                 <!-- I want a publish button and this should save the form to the database and redirect to home page -->
-                                <a href="<?php echo base_url(); ?>forms/save" class="btn btn-success">Publish Form</a>
+                                <button type="submit" id="save-form" class="btn btn-success">Publish Form</button>
                             </li>
                             <?php endif; ?>
                             <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
