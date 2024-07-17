@@ -49,7 +49,7 @@
                             <?php if ($this->session->userdata('current_page') == 'edit'): ?>
                             <li>
                                 <!-- I want a save draft button and this should save the form to the database and redirect to home page -->
-                                <button type="submit" form="form-edit" class="btn btn-primary">Save Draft</button>
+                                <!-- <button type="submit" form="form-edit" class="btn btn-primary">Save Draft</button> -->
                             </li>
                             <li>
                                 <!-- I want a publish button and this should save the form to the database and redirect to home page -->

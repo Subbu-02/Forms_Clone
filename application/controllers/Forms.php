@@ -67,26 +67,31 @@ class Forms extends CI_Controller {
 		redirect('home');
 	}
 
-	public function saveForm()
-	{
-		$form_id = $this->input->post('form_id');
-		$form_title = $this->input->post('form_title');
-		$form_description = $this->input->post('form_description');
-		// $questions = $this->input->post('questions');
-		// Save form details
+	public function saveForm() {
+        if (!$this->session->userdata('logged_in')) {
+            redirect('users/login');
+        }
 
-		$form_data = array(
-			'form_title' => $form_title,
-			'form_description' => $form_description
-		);
-		$this->FormModel->updateForm($form_id, $form_data);
+        $form_id = $this->input->post('form_id');
+        $form_title = $this->input->post('form_title');
+        $form_description = $this->input->post('form_description');
+        $questions = $this->input->post('questions'); // Assuming questions are sent as an array
 
-		// Save questions
-		// $this->FormModel->updateQuestions($form_id, $questions);
+        $form_data = array(
+            'form_title' => $form_title,
+            'form_description' => $form_description
+        );
 
-		// echo json_encode(['status' => 'success']);
-		redirect('home');
-	}
+        // Update form details
+        $this->FormModel->updateForm($form_id, $form_data);
+
+        // Update questions if provided
+        if (!empty($questions)) {
+            $this->FormModel->updateQuestions($form_id, $questions);
+        }
+
+        redirect('home');
+    }
 
 	// public function update($form_id)
 	// {

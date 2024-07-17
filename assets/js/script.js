@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let questionCount = numberOfQuestions - 1;
+    let questionCount = numberOfQuestions;
     let questionDataStore = {};
 
     const types = ['multiple-choice', 'short-answer', 'paragraph', 'checkboxes', 'dropdown'];
@@ -96,27 +96,23 @@ $(document).ready(function () {
         const questionId = $(this).data('question-id');
         const newType = $(this).val();
         const formOptionsContainer = $(`#form-options-${questionId}`);
-        console.log("Forms Options", formOptionsContainer);
-        // Initialize question data store for new questions
+        console.log(`Changing question type to: ${newType}`);
+    
         if (!questionDataStore[questionId]) {
             questionDataStore[questionId] = {
                 type: newType,
                 options: []
             };
         } else {
-            // Update the type in the store
             questionDataStore[questionId].type = newType;
         }
     
-        // Save current options if any
         questionDataStore[questionId].options = formOptionsContainer.find('.option-input').map(function () {
             return $(this).val();
         }).get();
     
-        // Clear current options
         formOptionsContainer.empty();
         
-        // Generate new options HTML based on the new type
         let optionsHtml = '';
         if (['multiple-choice', 'checkboxes', 'dropdown'].includes(newType)) {
             const storedOptions = questionDataStore[questionId].options;
@@ -136,12 +132,14 @@ $(document).ready(function () {
                 optionsHtml += `
                     <button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>
                 `;
+                console.log("Hi from not dropdown", optionsHtml);
             }
         }
         
         formOptionsContainer.html(optionsHtml);
-        console.log("Forms Options", formOptionsContainer);
-    });
+        console.log(`Options HTML updated for question ID ${questionId}:`, formOptionsContainer.html());
+    });    
+    
 
     $(document).on('click', '.delete-btn', function () {
         const questionId = $(this).data('question-id');
@@ -205,9 +203,48 @@ $(document).ready(function () {
 
     if (questionsFromDatabase && questionsFromDatabase.length > 0) {
         questionsFromDatabase.forEach((questionData) => {
-            addQuestion(null, questionData);
+            if (isValidQuestion(questionData)) {
+                addQuestion(null, questionData);
+            }
         });
     } else {
         addQuestion();
     }
+
+    function isValidQuestion(questionData) {
+        // Implement your validation logic here
+        // Example: Check if questionData.text is not empty
+        return questionData && questionData.text && questionData.text.trim() !== '';
+    }
+    // $(document).on('submit', '#save-form', function () {
+    //     let questions = [];
+    //     $('.question-container').each(function () {
+    //         let questionId = $(this).attr('question_id').split('-')[1];
+    //         let questionText = $(this).find('.question_text').val();
+    //         let questionType = $(this).find('.type').val();
+    //         let options = $(this).find('.options').map(function () {
+    //             return $(this).val();
+    //         }).get();
+    
+    //         questions.push({
+    //             id: questionId,
+    //             text: questionText,
+    //             type: questionType,
+    //             options: options
+    //         });
+    //     });
+    
+    //     $.ajax({
+    //         url: 'http://localhost/Forms_Clone/index.php/' +'forms/saveForm',
+    //         method: 'POST',
+    //         data: { questions: questions },
+    //         success: function (response) {
+    //             alert('Questions saved successfully!');
+    //         },
+    //         error: function (error) {
+    //             console.error('Error saving questions:', error);
+    //             alert('An error occurred while saving the questions.');
+    //         }
+    //     });
+    // });
 });

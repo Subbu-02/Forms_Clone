@@ -42,52 +42,52 @@ class FormModel extends CI_Model {
         // Update form data
         $this->db->where('form_id', $form_id);
         $this->db->update('forms', $form_data);
-        // $this->db->set('forms', $formData);
-
-        // Update questions data
-        // foreach ($questionsData as $question) {
-        //     if (isset($question['question_id'])) {
-        //         // Update existing question
-        //         $this->db->where('question_id', $question['id']);
-        //         $this->db->update('questions', $question);
-        //     } else {
-        //         // Insert new question
-        //         $question['form_id'] = $formId;
-        //         $this->db->insert('questions', $question);
-        //     }
-        // }
-
-        // if ($this->db->trans_status() === FALSE) {
-        //     return false;
-        // } else {
-        //     return true;
-        // }
     }
 
-    public function updateQuestions($formId, $questions)
-    {
-    // Remove existing questions for the form
-        $this->db->where('form_id', $formId);
-        $this->db->delete('questions');
+    public function updateQuestions($formId, $questions) {
+        // Fetch existing questions
+        $existingQuestions = $this->db->select('question_id')
+                                      ->from('questions')
+                                      ->where('form_id', $formId)
+                                      ->get()
+                                      ->result_array();
 
-        // Insert updated questions
+        $existingQuestionIds = array_column($existingQuestions, 'question_id');
+        $newQuestionIds = array_column($questions, 'id');
+
+        // Delete questions that are not in the new questions array
+        $questionsToDelete = array_diff($existingQuestionIds, $newQuestionIds);
+        if (!empty($questionsToDelete)) {
+            $this->db->where_in('question_id', $questionsToDelete)
+                     ->delete('questions');
+        }
+
+        // Update existing questions and add new ones
         foreach ($questions as $question) {
-            $data = [
+            $questionData = [
                 'form_id' => $formId,
-                'question_text' => $question['question_text'],
+                'question_text' => $question['text'],
                 'type' => $question['type']
             ];
-            $this->db->insert('questions', $data);
-            $questionId = $this->db->insert_id();
 
-            // Insert options if the question has them
-            if (in_array($question['type'], ['multiple-choice', 'checkboxes', 'dropdown'])) {
-                foreach ($question['options'] as $option) {
-                    $optionData = [
-                        'question_id' => $questionId,
-                        'option_text' => $option
-                    ];
-                    $this->db->insert('question_options', $optionData);
+            if (in_array($question['id'], $existingQuestionIds)) {
+                // Update existing question
+                $this->db->where('question_id', $question['id'])
+                         ->update('questions', $questionData);
+            } else {
+                // Insert new question
+                $this->db->insert('questions', $questionData);
+                $question_id = $this->db->insert_id();
+
+                // Insert options if the question type requires them
+                if (isset($question['options']) && in_array($question['type'], ['multiple-choice', 'checkboxes', 'dropdown'])) {
+                    foreach ($question['options'] as $option) {
+                        $optionData = [
+                            'question_id' => $question_id,
+                            'option_text' => $option
+                        ];
+                        $this->db->insert('question_options', $optionData);
+                    }
                 }
             }
         }
