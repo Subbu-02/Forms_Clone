@@ -1,12 +1,24 @@
 $(document).ready(function () {
-    let questionCount = numberOfQuestions -1;
+    let questionCount = numberOfQuestions - 1;
+    let questionDataStore = {};
+
+    const types = ['multiple-choice', 'short-answer', 'paragraph', 'checkboxes', 'dropdown'];
+
+    function getQuestionType(index) {
+        return types[index - 1];
+    }
+
+    function getQuestionTypeIndex(type) {
+        return types.indexOf(type) + 1;
+    }
 
     function generateQuestionHtml(questionId, questionData = null) {
         const questionText = questionData ? questionData.text : `Question ${questionId}`;
-        const questionType = questionData ? questionData.type : 'multiple-choice';
+        const questionType = questionData ? getQuestionType(questionData.type) : 'multiple-choice';
 
         let optionsHtml = '';
         if (questionData && questionData.options) {
+            questionData.options = questionData.options.split(',');
             questionData.options.forEach((option, index) => {
                 optionsHtml += `
                     <div class="option">
@@ -31,11 +43,7 @@ $(document).ready(function () {
                 <div class="question-content">
                     <input type="text" class="form-control form-question" placeholder="${questionText}" value="${questionText}">
                     <select class="form-control question-type" data-question-id="${questionId}">
-                        <option value="multiple-choice" ${questionType === 'multiple-choice' ? 'selected' : ''}>Multiple Choice</option>
-                        <option value="short-answer" ${questionType === 'short-answer' ? 'selected' : ''}>Short Answer</option>
-                        <option value="paragraph" ${questionType === 'paragraph' ? 'selected' : ''}>Paragraph</option>
-                        <option value="checkboxes" ${questionType === 'checkboxes' ? 'selected' : ''}>Checkboxes</option>
-                        <option value="dropdown" ${questionType === 'dropdown' ? 'selected' : ''}>Dropdown</option>
+                        ${types.map((type, index) => `<option value="${type}" ${questionType === type ? 'selected' : ''}>${type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')}</option>`).join('')}
                     </select>
                     <div class="form-options" id="form-options-${questionId}">
                         ${optionsHtml}
@@ -86,21 +94,53 @@ $(document).ready(function () {
 
     $(document).on('change', '.question-type', function () {
         const questionId = $(this).data('question-id');
-        const type = $(this).val();
-        let optionsHtml = '';
-
-        if (type === 'multiple-choice' || type === 'checkboxes' || type === 'dropdown') {
-            optionsHtml = `
-                <div class="option">
-                    <input type="text" class="form-control option-input" placeholder="Option 1">
-                    <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
-                </div>
-                <button type="button" class="btn btn-secondary add-option" data-question-id="${questionId}">Add option</button>
-                ${type !== 'dropdown' ? `<button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>` : ''}
-            `;
+        const newType = $(this).val();
+        const formOptionsContainer = $(`#form-options-${questionId}`);
+        console.log("Forms Options", formOptionsContainer);
+        // Initialize question data store for new questions
+        if (!questionDataStore[questionId]) {
+            questionDataStore[questionId] = {
+                type: newType,
+                options: []
+            };
+        } else {
+            // Update the type in the store
+            questionDataStore[questionId].type = newType;
         }
-
-        $(`#form-options-${questionId}`).html(optionsHtml);
+    
+        // Save current options if any
+        questionDataStore[questionId].options = formOptionsContainer.find('.option-input').map(function () {
+            return $(this).val();
+        }).get();
+    
+        // Clear current options
+        formOptionsContainer.empty();
+        
+        // Generate new options HTML based on the new type
+        let optionsHtml = '';
+        if (['multiple-choice', 'checkboxes', 'dropdown'].includes(newType)) {
+            const storedOptions = questionDataStore[questionId].options;
+            storedOptions.forEach((option, index) => {
+                optionsHtml += `
+                    <div class="option">
+                        <input type="text" class="form-control option-input" value="${option}">
+                        <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
+                    </div>
+                `;
+            });
+    
+            optionsHtml += `
+                <button type="button" class="btn btn-secondary add-option" data-question-id="${questionId}">Add option</button>
+            `;
+            if (newType !== 'dropdown') {
+                optionsHtml += `
+                    <button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>
+                `;
+            }
+        }
+        
+        formOptionsContainer.html(optionsHtml);
+        console.log("Forms Options", formOptionsContainer);
     });
 
     $(document).on('click', '.delete-btn', function () {

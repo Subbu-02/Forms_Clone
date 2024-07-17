@@ -20,6 +20,7 @@
         <?php print_r($questions); ?> -->
         <script>var numberOfQuestions = <?php echo count($questions); ?>;</script>
         <div class="form-card">
+        <form id="form-edit" action="<?= base_url('forms/saveForm') ?>" method="POST">
             <div class="form-header">
             <input type="hidden" id="form_id" name="form_id" value="<?php echo isset($form['form_id']) ? $form['form_id'] : ''; ?>">
             <input type="text" class="form-title form-control" id="form_title" name="form_title" value="<?php echo isset($form['form_title']) ? $form['form_title'] : ''; ?>" style="border-radius: 5px; height: 75px"><br>
@@ -94,6 +95,7 @@
                     </div>
                 </form>
             </div>
+        </form>
         </div>
         <div class="add-question-container">
             <button type="button" id="add-question" class="btn btn-secondary add-question-btn"><span class="glyphicon glyphicon-plus"></span></button>

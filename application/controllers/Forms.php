@@ -5,7 +5,7 @@ class Forms extends CI_Controller {
 	public function home() {
 		// If the user is logged out, redirect to login page
 		if (!$this->session->userdata('logged_in')) {
-			redirect('login');
+			redirect('users/login');
 		}
 		$this->session->set_userdata('current_page', 'home');
         $data['forms'] = $this->FormModel->get_forms($this->session->userdata('user_id'));
@@ -24,7 +24,7 @@ class Forms extends CI_Controller {
 	public function edit($form_id)
 	{
 		if (!$this->session->userdata('logged_in')) {
-			redirect('login');
+			redirect('users/login');
 		}
 		$data['questions'] = $this->FormModel->get_questions($form_id);
 		$data['form_id'] = $form_id;
@@ -38,13 +38,34 @@ class Forms extends CI_Controller {
     public function create() {
         // Load form creation view
 		if (!$this->session->userdata('logged_in')) {
-			redirect('login');
+			redirect('users/login');
 		}
 		$this->session->set_userdata('current_page', 'create');
         $this->load->view('Templates/header');
         $this->load->view('create');
         $this->load->view('Templates/footer');
     }
+
+	public function save() {
+		if (!$this->session->userdata('logged_in')) {
+			redirect('login');
+		}
+		$this->session->set_userdata('current_page', 'create');
+		$data = array(
+			'user_id' => $this->session->userdata('user_id'),
+			'form_title' => $this->input->post('title'),
+			'form_description' => $this->input->post('description'),
+			'status' => 'draft'
+		);
+		$questions = $this->input->post('questions');
+        if ($questions && is_array($questions)) {
+            foreach ($questions as $question_id => $question_data) {
+                $this->FormModel->update_question($question_id, $question_data);
+            }
+        }
+		$this->FormModel->save_form($data);
+		redirect('home');
+	}
 
 	public function saveForm()
 	{
@@ -53,12 +74,17 @@ class Forms extends CI_Controller {
 		$form_description = $this->input->post('form_description');
 		// $questions = $this->input->post('questions');
 		// Save form details
-		$this->FormModel->updateForm($form_id, $form_title, $form_description);
+
+		$form_data = array(
+			'form_title' => $form_title,
+			'form_description' => $form_description
+		);
+		$this->FormModel->updateForm($form_id, $form_data);
 
 		// Save questions
 		// $this->FormModel->updateQuestions($form_id, $questions);
 
-		echo json_encode(['status' => 'success']);
+		// echo json_encode(['status' => 'success']);
 		redirect('home');
 	}
 
@@ -83,7 +109,7 @@ class Forms extends CI_Controller {
 	{
 		// Load the FormModel
 		if (!$this->session->userdata('logged_in')) {
-			redirect('login');
+			redirect('users/login');
 		}		
 		// Fetch the form data
 		$form = $this->FormModel->get_form($formId);

@@ -37,14 +37,11 @@ class FormModel extends CI_Model {
         return $this->db->insert_id();
     }
 
-    public function updateForm($form_id, $form_title, $form_description)
+    public function updateForm($form_id, $form_data)
     {
         // Update form data
         $this->db->where('form_id', $form_id);
-
-        $this->db->set('form_title', $form_title);
-        $this->db->set('form_description', $form_description);
-        $this->db->update('forms');
+        $this->db->update('forms', $form_data);
         // $this->db->set('forms', $formData);
 
         // Update questions data
