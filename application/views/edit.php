@@ -15,6 +15,7 @@
         echo json_encode($questions); ?>;
     </script>
     <div class="container form-container">
+        <script>var userId = <?php echo $form['user_id']; ?>;</script>
         <!-- <?php print_r($form); ?>
         <br>
         <?php print_r($questions); ?> -->
@@ -30,17 +31,13 @@
                 <form id="google-form-clone">
                     <div id="questions-container">
                         <?php foreach ($questions as $question): ?>
-                            <!-- <?php echo $question['question_id']; ?> -->
-                            <!-- <?php echo $question['question_text']; ?>
-                            <?php echo $question['type']; ?>
-                            <?php echo $question['options']; ?> -->
-                            <!-- <br> -->
                             <script>
                                 var questionId = <?php echo $question['question_id']; ?>;
                             </script>
                             <!-- Code to display the question data as in script.js -->
                             <div class="form-group question-container" id="question-<?php echo $question['question_id']; ?>">
                                 <div class="question-content">
+                                    <input type="hidden" class="user-id" value="<?php echo $form['user_id'];?>">
                                     <input type="text" class="form-control form-question" name="question_text[<?php echo $question['question_id']; ?>]" placeholder="Question <?php echo $question['question_id']; ?>" value="<?php echo htmlspecialchars($question['question_text']); ?>">
                                     <select class="form-control question-type" data-question-id="<?php echo $question['question_id']; ?>">
                                     <?php
@@ -122,6 +119,7 @@
                 var questionId = $(this).attr('id').split('-')[1];
                 var questionText = $(this).find('.form-question').val();
                 var questionType = $(this).find('.question-type').val();
+                // var userId = $(this).find('.user-id').val();
                 switch (questionType) {
                     case 'multiple-choice':
                         questionType = 1;
@@ -149,7 +147,8 @@
                     question_text: questionText,
                     type: questionType,
                     options: options,
-                    required: required
+                    user_id: userId
+                    // required: required
                 });
             });
 
@@ -158,15 +157,26 @@
             $.ajax({
                 url: '<?= base_url("forms/saveForm") ?>',
                 method: 'POST',
-                data: { questions: questions, form_id: $('#form_id').val(), form_title: $('#form_title').val(), form_description: $('#form_description').val() }
-                // success: function(response) {
-                //     console.log("Response:", response); // Debugging output
-                //     alert('Questions saved successfully!');
-                // },
-                // error: function(xhr, status, error) {
-                //     console.error('Error saving questions:', xhr, status, error);
-                //     alert('An error occurred while saving the questions.');
-                // }
+                data: { questions: questions, form_id: $('#form_id').val(), form_title: $('#form_title').val(), form_description: $('#form_description').val() },
+                success: function(response) {
+                    // console.log("Response:", response);
+                    // window.location.href ='<?= base_url("home") ?>';
+                    swal.fire({
+                        title: 'Questions saved successfully',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Okay'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '<?= base_url("home") ?>';
+                        }
+                    })
+                },
+                error: function(xhr, status, error) {
+                    // console.error('Error saving questions:', xhr, status, error);
+                    alert('An error occurred while saving the questions.');
+                }
             });
         });
     });

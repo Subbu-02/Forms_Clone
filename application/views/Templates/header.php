@@ -43,6 +43,9 @@
                             <li><a href="<?php echo base_url(); ?>categories/create">Create Category</a></li> -->
                             <?php if ($this->session->userdata('current_page') == 'home'): ?>
                             <li>
+                                <a href="<?php echo site_url('fillform'); ?>" class="btn btn-primary" style="color: #fff;">Fill Form</a>
+                            </li>
+                            <li>
                                 <a href="<?php echo site_url('create'); ?>" class="btn btn-primary" style="color: #fff;">Create Form</a>
                             </li>
                             <?php endif; ?>

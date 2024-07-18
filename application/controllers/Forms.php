@@ -35,6 +35,35 @@ class Forms extends CI_Controller {
 		$this->load->view('Templates/footer');
 	}
 
+	public function respond($form_id)
+	{
+		if (!$this->session->userdata('logged_in')) {
+			redirect('users/login');
+		}
+		$form = $this->FormModel->get_form($form_id);
+		$questions = $this->FormModel->get_questions($form_id);
+		$this->session->set_userdata('current_page', 'respond');
+		// Pass the form data to the view
+		$data['form'] = $form;
+		$data['questions'] = $questions;
+		
+		// Load the view with form data
+		$this->load->view('Templates/header');
+		$this->load->view('respond', $data);
+		$this->load->view('Templates/footer');
+	}
+
+	public function fillform() {
+		if (!$this->session->userdata('logged_in')) {
+			redirect('users/login');
+		}
+		$this->session->set_userdata('current_page', 'fillform');
+		$data['forms'] = $this->FormModel->get_all_forms();
+		$this->load->view('Templates/header');
+        $this->load->view('fillform', $data);
+        $this->load->view('Templates/footer');
+	}
+
     public function create() {
         // Load form creation view
 		if (!$this->session->userdata('logged_in')) {
@@ -75,16 +104,15 @@ class Forms extends CI_Controller {
         $form_id = $this->input->post('form_id');
         $form_title = $this->input->post('form_title');
         $form_description = $this->input->post('form_description');
-        $questions = $this->input->post('questions'); // Assuming questions are sent as an array
-
+        $questions = $this->input->post('questions'); 
         $form_data = array(
             'form_title' => $form_title,
             'form_description' => $form_description
         );
-
         // Update form details
         $this->FormModel->updateForm($form_id, $form_data);
-
+		// print_r($questions);
+		// exit;
         // Update questions if provided
         if (!empty($questions)) {
             $this->FormModel->updateQuestions($form_id, $questions);
@@ -92,6 +120,21 @@ class Forms extends CI_Controller {
 
         redirect('home');
     }
+
+	public function saveResponses(){
+		if (!$this->session->userdata('logged_in')) {
+            redirect('users/login');
+        }
+		$form_id = $this->input->post('form_id');
+		$responses = $this->input->post('responses');
+		$user_id = $this->input->post('user_id');
+		$this->FormModel->addResponse($form_id, $responses, $user_id);
+		// print_r($form_id);
+		// print_r($responses);
+		// echo $user_id;
+		// exit;
+		redirect('fillform');
+	}
 
 	// public function update($form_id)
 	// {

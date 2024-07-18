@@ -53,6 +53,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['edit'] = 'forms/edit';
 $route['home'] = 'forms/home';
 $route['create'] = 'forms/create';
+$route['fillform'] = 'forms/fillform';
+$route['respond/(:any)'] = 'forms/respond/$1';
 $route['edit/(:any)'] = 'forms/edit/$1';
 $route['deleteForm/(:num)'] = 'forms/deleteForm/$1';
 $route['view/(:num)'] = 'forms/view/$1';

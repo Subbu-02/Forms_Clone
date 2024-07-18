@@ -83,13 +83,14 @@ $(document).ready(function () {
         $(`#question-${questionId}`).addClass('selected');
     }
 
-    $(document).on('click', '.question-container', function () {
-        const questionId = $(this).attr('id').split('-')[1];
-        selectQuestion(questionId);
+    $(document).on('click', '.form-question, .question-type, .form-options, .form-actions button', function (e) {
+        e.stopPropagation(); // Stop the event from bubbling up to the parent elements
     });
 
-    $(document).on('click', '.form-question, .question-type, .form-options, .form-actions button', function (e) {
-        e.stopPropagation();
+    $(document).on('click', '.question-container', function () {
+        if(!window.location.href.includes('respond')){
+        const questionId = $(this).attr('id').split('-')[1];
+        selectQuestion(questionId);}
     });
 
     $(document).on('change', '.question-type', function () {

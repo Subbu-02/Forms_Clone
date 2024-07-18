@@ -28,7 +28,7 @@ function confirmDeletion(formId) {
                     <a href="<?php echo site_url('forms/edit/'.$form['form_id']); ?>" class="btn btn-primary" style="">Edit</a>
                 <?php endif; ?>
                 <?php if ($form['status'] == 'published'): ?>
-                    <a href="<?php echo site_url('forms/edit/'.$form['form_id']); ?>" class="btn btn-primary" style="">Responses</a>
+                    <a href="<?php echo site_url('responses/responses_fetch/'.$form['form_id']); ?>" class="btn btn-primary" style="">Responses</a>
                 <?php endif; ?>
                 <button onclick="confirmDeletion(<?= $form['form_id']; ?>)" class="btn btn-danger" style="justify-content:right">Delete Form</a>
             </div>
