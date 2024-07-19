@@ -75,10 +75,15 @@
                                     <?php endif; ?>
                                 </div>
                                 <div class="form-actions text-right">
-                                    <button type="button" class="btn btn-default required-btn" data-question-id="<?php echo $question['question_id']; ?>" <?php echo $question['required'] == 1 ? '' : 'disabled'; ?>>Required</button>
-                                    <button type="button" class="btn btn-default duplicate-btn" data-question-id="<?php echo $question['question_id']; ?>" title="Duplicate Question">
+                                    <?php if ($question['required'] == 1): ?>
+                                        <button type="button" class="btn btn-success required-btn" data-question-id="<?php echo $question['question_id']; ?>">Required</button>
+                                    <?php else: ?>
+                                        <button type="button" class="btn btn-default required-btn" data-question-id="<?php echo $question['question_id']; ?>" disabled>Required</button>
+                                    <?php endif; ?>
+                                    <!-- <button type="button" class="btn btn-default required-btn" data-question-id="<?php echo $question['question_id']; ?>" <?php echo $question['required'] == 1 ? '' : 'disabled'; ?>>Required</button> -->
+                                    <!-- <button type="button" class="btn btn-default duplicate-btn" data-question-id="<?php echo $question['question_id']; ?>" title="Duplicate Question">
                                         <span class="glyphicon glyphicon-duplicate"></span>
-                                    </button>
+                                    </button> -->
                                     <button type="button" class="btn btn-danger delete-btn" data-question-id="<?php echo $question['question_id']; ?>" title="Delete Question">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
@@ -147,8 +152,8 @@
                     question_text: questionText,
                     type: questionType,
                     options: options,
-                    user_id: userId
-                    // required: required
+                    user_id: userId,
+                    required: required // Add this line to include the required field
                 });
             });
 
@@ -163,6 +168,74 @@
                     // window.location.href ='<?= base_url("home") ?>';
                     swal.fire({
                         title: 'Questions saved successfully',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Okay'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '<?= base_url("home") ?>';
+                        }
+                    })
+                },
+                error: function(xhr, status, error) {
+                    // console.error('Error saving questions:', xhr, status, error);
+                    alert('An error occurred while saving the questions.');
+                }
+            });
+        });
+        $('#form-publish').click(function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var questions = [];
+            $('.question-container').each(function() {
+                var questionId = $(this).attr('id').split('-')[1];
+                var questionText = $(this).find('.form-question').val();
+                var questionType = $(this).find('.question-type').val();
+                // var userId = $(this).find('.user-id').val();
+                switch (questionType) {
+                    case 'multiple-choice':
+                        questionType = 1;
+                        break;
+                    case 'short-answer':
+                        questionType = 2;
+                        break;
+                    case 'paragraph': 
+                        questionType = 3;
+                        break;
+                    case 'checkboxes':
+                        questionType = 4;
+                        break;  
+                    case 'dropdown':
+                        questionType = 5;
+                        break;
+                }
+                var options = $(this).find('.option-input').map(function() {
+                    return $(this).val();
+                }).get();
+                var required = $(this).find('.required-btn').hasClass('btn-success') ? 1 : 0;
+
+                questions.push({
+                    question_id: questionId,
+                    question_text: questionText,
+                    type: questionType,
+                    options: options,
+                    user_id: userId,
+                    required: required // Add this line to include the required field
+                });
+            });
+
+            console.log("Sending data:", questions); // Debugging output
+
+            $.ajax({
+                url: '<?= base_url("forms/publish") ?>',
+                method: 'POST',
+                data: { questions: questions, form_id: $('#form_id').val(), form_title: $('#form_title').val(), form_description: $('#form_description').val() },
+                success: function(response) {
+                    // console.log("Response:", response);
+                    // window.location.href ='<?= base_url("home") ?>';
+                    swal.fire({
+                        title: 'Data saved and form published successfully',
                         icon: 'success',
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',

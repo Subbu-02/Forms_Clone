@@ -75,6 +75,7 @@ class FormModel extends CI_Model {
                 'question_text' => $question['question_text'],
                 'type' => $question['type'],
                 'created_by' => $question['user_id'],
+                'required' => $question['required'],
                 'options' => isset($question['options']) ? json_encode($question['options']) : NULL // Encode options as JSON
             ];
 

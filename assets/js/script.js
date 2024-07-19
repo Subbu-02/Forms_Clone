@@ -51,9 +51,6 @@ $(document).ready(function () {
                 </div>
                 <div class="form-actions text-right">
                     <button type="button" class="btn btn-default required-btn" data-question-id="${questionId}">Required</button>
-                    <button type="button" class="btn btn-default duplicate-btn" data-question-id="${questionId}" title="Duplicate Question">
-                        <span class="glyphicon glyphicon-duplicate"></span>
-                    </button>
                     <button type="button" class="btn btn-danger delete-btn" data-question-id="${questionId}" title="Delete Question">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
@@ -152,13 +149,13 @@ $(document).ready(function () {
         $(this).toggleClass('btn-success');
     });
 
-    $(document).on('click', '.duplicate-btn', function () {
-        const questionId = $(this).data('question-id');
-        questionCount++;
-        const newQuestionHtml = generateQuestionHtml(questionCount);
-        $(`#question-${questionId}`).after(newQuestionHtml);
-        selectQuestion(questionCount);
-    });
+    // $(document).on('click', '.duplicate-btn', function () {
+    //     const questionId = $(this).data('question-id');
+    //     questionCount++;
+    //     const newQuestionHtml = generateQuestionHtml(questionCount);
+    //     $(`#question-${questionId}`).after(newQuestionHtml);
+    //     selectQuestion(questionCount);
+    // });
 
     $(document).on('click', '.add-option', function () {
         const questionId = $(this).data('question-id');

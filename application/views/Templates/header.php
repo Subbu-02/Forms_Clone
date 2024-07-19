@@ -12,10 +12,45 @@
     <link href='https://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="http://localhost/Forms_Clone/assets/js/script.js"></script>
+    <style>
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        padding: 15px;
+        margin-top:50px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        z-index: 1000; /* Ensure it floats above other content */
+        color: #ffffff; /* Text color to contrast with the background */
+    }
+
+    .alert-success {
+        background-color: #2c3e50;
+        border-color: #1a252f;
+    }
+
+    .alert-danger {
+        background-color: #2c3e50;
+        border-color: #1a252f;
+    }
+
+    .fade-out {
+        animation: fadeOut 5s forwards;
+    }
+
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+</style>
 </head>
 <body>
     <header>
@@ -43,20 +78,20 @@
                             <li><a href="<?php echo base_url(); ?>categories/create">Create Category</a></li> -->
                             <?php if ($this->session->userdata('current_page') == 'home'): ?>
                             <li>
-                                <a href="<?php echo site_url('fillform'); ?>" class="btn btn-primary" style="color: #fff;">Fill Form</a>
+                                <button type="button" class="btn btn-primary" style="color: #fff;" onclick="location.href='<?php echo site_url('fillform'); ?>';">Fill Form</button>
                             </li>
                             <li>
-                                <a href="<?php echo site_url('create'); ?>" class="btn btn-primary" style="color: #fff;">Create Form</a>
+                                <button type="button" class="btn btn-primary" style="color: #fff;" onclick="location.href='<?php echo site_url('create'); ?>';">Create Form</button>
                             </li>
                             <?php endif; ?>
                             <?php if ($this->session->userdata('current_page') == 'edit'): ?>
                             <li>
-                                <!-- I want a save draft button and this should save the form to the database and redirect to home page -->
-                                <!-- <button type="submit" form="form-edit" class="btn btn-primary">Save Draft</button> -->
+                                <button type="submit" id="form-publish" class="btn btn-success">Publish Form</button>
                             </li>
+                            <?php endif; ?>
+                            <?php if ($this->session->userdata('current_page') == 'responses'): ?>
                             <li>
-                                <!-- I want a publish button and this should save the form to the database and redirect to home page -->
-                                <button type="submit" id="save-form" class="btn btn-success">Publish Form</button>
+                                <button type="button" class="btn btn-primary" style="color: #fff;" onclick="location.href='<?php echo site_url('responses/responseStats/'.$form_id); ?>';">Response Summary</button>
                             </li>
                             <?php endif; ?>
                             <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
@@ -76,19 +111,30 @@
     </header>
 
     <div class="container">
-        <?php if($this->session->flashdata('user_registered')): ?>
-            <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_registered').'</p>'; ?>
-        <?php endif; ?>
+    <?php if($this->session->flashdata('user_registered')): ?>
+        <p class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_registered'); ?></p>
+    <?php endif; ?>
 
-        <?php if($this->session->flashdata('login_failed')): ?>
-            <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('login_failed').'</p>'; ?>
-        <?php endif; ?>
+    <?php if($this->session->flashdata('login_failed')): ?>
+        <p class="alert alert-danger fade-out"><?php echo $this->session->flashdata('login_failed'); ?></p>
+    <?php endif; ?>
 
-        <?php if($this->session->flashdata('user_loggedin')): ?>
-            <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_loggedin').'</p>'; ?>
-        <?php endif; ?>
+    <?php if($this->session->flashdata('user_loggedin')): ?>
+        <p class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_loggedin'); ?></p>
+    <?php endif; ?>
 
-        <?php if($this->session->flashdata('user_loggedout')): ?>
-            <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_loggedout').'</p>'; ?>
-        <?php endif; ?>
-    </div>
+    <?php if($this->session->flashdata('user_loggedout')): ?>
+        <p class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_loggedout'); ?></p>
+    <?php endif; ?>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            let alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.classList.add('fade-out');
+            });
+        }, 3000); // Change this value to set how long the message should be visible
+    });
+</script>

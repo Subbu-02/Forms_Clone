@@ -60,6 +60,7 @@ $route['deleteForm/(:num)'] = 'forms/deleteForm/$1';
 $route['view/(:num)'] = 'forms/view/$1';
 $route['save'] = 'forms/save';
 $route['saveForm'] = 'Forms/saveForm';
+$route['responses/view_response/(:any)/(:any)/(:any)'] = 'responses/view_response/$1/$2/$3';
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

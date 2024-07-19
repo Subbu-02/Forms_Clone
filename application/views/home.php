@@ -25,12 +25,14 @@ function confirmDeletion(formId) {
                 <p>Status: <?php echo ucfirst($form['status']); ?></p>
                 <a href="<?php echo site_url('forms/view/'.$form['form_id']); ?>" class="btn btn-primary">View</a>
                 <?php if ($form['status'] == 'draft'): ?>
-                    <a href="<?php echo site_url('forms/edit/'.$form['form_id']); ?>" class="btn btn-primary" style="">Edit</a>
+                    <a href="<?php echo site_url('forms/edit/'.$form['form_id']); ?>" class="btn btn-primary">Edit</a>
                 <?php endif; ?>
                 <?php if ($form['status'] == 'published'): ?>
-                    <a href="<?php echo site_url('responses/responses_fetch/'.$form['form_id']); ?>" class="btn btn-primary" style="">Responses</a>
+                    <a href="<?php echo site_url('responses/responses_fetch/'.$form['form_id']); ?>" class="btn btn-primary">Responses</a>
                 <?php endif; ?>
-                <button onclick="confirmDeletion(<?= $form['form_id']; ?>)" class="btn btn-danger" style="justify-content:right">Delete Form</a>
+                <div style="text-align: right;">
+                    <button onclick="confirmDeletion(<?= $form['form_id']; ?>)" class="btn btn-danger">Delete Form</button>
+                </div>
             </div>
             <br>
         <?php endforeach; ?>

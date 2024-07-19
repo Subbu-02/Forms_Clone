@@ -30,7 +30,7 @@ class Forms extends CI_Controller {
 		$data['form_id'] = $form_id;
 		$data['form'] = $this->FormModel->get_form($form_id);
 		$this->session->set_userdata('current_page', 'edit');
-		$this->load->view('Templates/header');
+		$this->load->view('Templates/header', $data);
 		$this->load->view('edit', $data);
 		$this->load->view('Templates/footer');
 	}
@@ -136,21 +136,31 @@ class Forms extends CI_Controller {
 		redirect('fillform');
 	}
 
-	// public function update($form_id)
-	// {
-	// 	$formData = $this->input->post('form');
-	// 	$questionsData = $this->input->post('questions');
+	public function publish(){
+		if (!$this->session->userdata('logged_in')) {
+            redirect('users/login');
+        }
+		$form_id = $this->input->post('form_id');
+        $form_title = $this->input->post('form_title');
+        $form_description = $this->input->post('form_description');
+		$status = "published";
+        $questions = $this->input->post('questions'); 
+        $form_data = array(
+            'form_title' => $form_title,
+            'form_description' => $form_description,
+			'status' => $status
+        );
+        // Update form details
+        $this->FormModel->updateForm($form_id, $form_data);
+		// print_r($questions);
+		// exit;
+        // Update questions if provided
+        if (!empty($questions)) {
+            $this->FormModel->updateQuestions($form_id, $questions);
+        }
 
-	// 	$updateResult = $this->FormModel->updateForm($form_id, $formData, $questionsData);
-
-	// 	if ($updateResult) {
-	// 		$this->session->set_flashdata('success', 'Form updated successfully');
-	// 	} else {
-	// 		$this->session->set_flashdata('error', 'Failed to update form');
-	// 	}
-
-	// 	redirect('forms/edit/'.$form_id);
-	// }
+        // redirect('home');
+	}
 
 
 	public function view($formId)
