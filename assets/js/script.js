@@ -65,14 +65,25 @@ $(document).ready(function () {
     function addQuestion(afterQuestionId, questionData = null) {
         questionCount++;
         const newQuestionHtml = generateQuestionHtml(questionCount, questionData);
-
+    
         if (afterQuestionId) {
             $(`#question-${afterQuestionId}`).after(newQuestionHtml);
         } else {
             $('#questions-container').append(newQuestionHtml);
         }
-
+    
+        reorderQuestions();
         selectQuestion(questionCount);
+    }
+    
+    function reorderQuestions() {
+        $('.question-container').each(function(index) {
+            const questionId = $(this).attr('id').split('-')[1];
+            questionDataStore[questionId].order = index + 1; // Update order dynamically
+        });
+
+        // Update the hidden form field to store the questions in the correct order
+        $('#questions-order').val(JSON.stringify(questionDataStore)); // Ensure this is included in the form
     }
 
     function selectQuestion(questionId) {
@@ -142,20 +153,14 @@ $(document).ready(function () {
     $(document).on('click', '.delete-btn', function () {
         const questionId = $(this).data('question-id');
         $(`#question-${questionId}`).remove();
+        delete questionDataStore[questionId];
+        reorderQuestions();
     });
 
     $(document).on('click', '.required-btn', function () {
         const questionId = $(this).data('question-id');
         $(this).toggleClass('btn-success');
     });
-
-    // $(document).on('click', '.duplicate-btn', function () {
-    //     const questionId = $(this).data('question-id');
-    //     questionCount++;
-    //     const newQuestionHtml = generateQuestionHtml(questionCount);
-    //     $(`#question-${questionId}`).after(newQuestionHtml);
-    //     selectQuestion(questionCount);
-    // });
 
     $(document).on('click', '.add-option', function () {
         const questionId = $(this).data('question-id');
@@ -214,28 +219,18 @@ $(document).ready(function () {
         // Example: Check if questionData.text is not empty
         return questionData && questionData.text && questionData.text.trim() !== '';
     }
+
+    // Ensure the form is saved with the correct order
     // $(document).on('submit', '#save-form', function () {
-    //     let questions = [];
-    //     $('.question-container').each(function () {
-    //         let questionId = $(this).attr('question_id').split('-')[1];
-    //         let questionText = $(this).find('.question_text').val();
-    //         let questionType = $(this).find('.type').val();
-    //         let options = $(this).find('.options').map(function () {
-    //             return $(this).val();
-    //         }).get();
-    
-    //         questions.push({
-    //             id: questionId,
-    //             text: questionText,
-    //             type: questionType,
-    //             options: options
-    //         });
-    //     });
-    
+    //     reorderQuestions();
+    //     // Serialize the form data including the updated question order
+    //     const formData = $(this).serializeArray();
+    //     formData.push({ name: 'questionsOrder', value: JSON.stringify(questionDataStore) });
+
     //     $.ajax({
-    //         url: 'http://localhost/Forms_Clone/index.php/' +'forms/saveForm',
+    //         url: 'http://localhost/Forms_Clone/index.php/forms/saveForm',
     //         method: 'POST',
-    //         data: { questions: questions },
+    //         data: formData,
     //         success: function (response) {
     //             alert('Questions saved successfully!');
     //         },
@@ -244,5 +239,7 @@ $(document).ready(function () {
     //             alert('An error occurred while saving the questions.');
     //         }
     //     });
+
+    //     return false; // Prevent the default form submission
     // });
 });

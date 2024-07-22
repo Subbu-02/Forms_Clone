@@ -52,6 +52,13 @@ class Responses extends CI_Controller {
 		$data['questions'] = $this->FormModel->get_questions($form_id);
         $data['form_id'] = $form_id;
         $data['form_title'] = $this->ResponseModel->get_form_title($form_id);
+        $responses = $data['responses'];
+        foreach ($responses as $response) {
+            $response->user_data = $this->UserModel->user_data($response->created_by);
+        }
+        $data['responses'] = $responses;
+        // print_r($responses);
+        // exit;
         $this->load->view('Templates/header');
         $this->load->view('response_stats', $data);
         $this->load->view('Templates/footer');

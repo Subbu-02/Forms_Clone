@@ -78,7 +78,7 @@
                                     <?php if ($question['required'] == 1): ?>
                                         <button type="button" class="btn btn-success required-btn" data-question-id="<?php echo $question['question_id']; ?>">Required</button>
                                     <?php else: ?>
-                                        <button type="button" class="btn btn-default required-btn" data-question-id="<?php echo $question['question_id']; ?>" disabled>Required</button>
+                                        <button type="button" class="btn btn-default required-btn" data-question-id="<?php echo $question['question_id']; ?>">Required</button>
                                     <?php endif; ?>
                                     <!-- <button type="button" class="btn btn-default required-btn" data-question-id="<?php echo $question['question_id']; ?>" <?php echo $question['required'] == 1 ? '' : 'disabled'; ?>>Required</button> -->
                                     <!-- <button type="button" class="btn btn-default duplicate-btn" data-question-id="<?php echo $question['question_id']; ?>" title="Duplicate Question">
@@ -103,7 +103,7 @@
             <button type="button" id="add-question" class="btn btn-secondary add-question-btn"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
         <button type="submit" form="form-edit" class="btn btn-primary">Save Draft</button>
-        <button class="btn btn-primary" onclick="history.back()">Back</button>
+        <input type="hidden" id="questions-order" name="questions_order" value="">
     </div>
     
 
@@ -153,7 +153,8 @@
                     type: questionType,
                     options: options,
                     user_id: userId,
-                    required: required // Add this line to include the required field
+                    required: required,
+                    order: $(this).index() + 1 // Add this line to include the order
                 });
             });
 
@@ -221,7 +222,8 @@
                     type: questionType,
                     options: options,
                     user_id: userId,
-                    required: required // Add this line to include the required field
+                    required: required,
+                    order: $(this).index() + 1 // Add this line to include the order
                 });
             });
 

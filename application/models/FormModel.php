@@ -35,7 +35,11 @@ class FormModel extends CI_Model {
     public function get_questions($form_id) {
         $this->db->where('form_id', $form_id);
         $query = $this->db->get('questions');
-        return $query->result_array();
+        $questions = $query->result_array();
+        usort($questions, function($a, $b) {
+            return $a['index'] <=> $b['index'];
+        });
+        return $questions;
     }
 
     public function insertForm($data) {
@@ -76,7 +80,8 @@ class FormModel extends CI_Model {
                 'type' => $question['type'],
                 'created_by' => $question['user_id'],
                 'required' => $question['required'],
-                'options' => isset($question['options']) ? json_encode($question['options']) : NULL // Encode options as JSON
+                'options' => isset($question['options']) ? json_encode($question['options']) : NULL,
+                'index' => $question['order']
             ];
 
             if (in_array($question['question_id'], $existingQuestionIds)) {

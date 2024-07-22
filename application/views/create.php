@@ -10,6 +10,6 @@
             <textarea class="form-control" id="description" name="description"></textarea>
         </div>
         <button type="submit" class="btn btn-success">Create</button>
-        <button class="btn btn-primary" onclick="history.back()">Back</button>
+        <button class="btn btn-primary" onclick="history.back()">Back</button><br>
     </form>
 </div>

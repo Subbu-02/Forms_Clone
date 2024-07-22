@@ -27,13 +27,14 @@
     </div>
     <button class="btn btn-primary mt-3" onclick="history.back()">Back</button>
 </div>
+<br>
 
 <!-- Initialize DataTables -->
 <script>
     $(document).ready(function() {
         $('#responsesTable').DataTable({
             "pagingType": "full_numbers", // Full pagination controls
-            "lengthMenu": [10, 25, 50], // Options for number of rows per page
+            "lengthMenu": [5, 10, 25, 50], // Options for number of rows per page
             "language": {
                 "search": "Filter records:", // Custom search label
                 "lengthMenu": "Show _MENU_ entries" // Custom length menu label

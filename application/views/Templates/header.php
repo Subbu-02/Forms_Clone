@@ -33,13 +33,13 @@
     }
 
     .alert-success {
-        background-color: #2c3e50;
-        border-color: #1a252f;
+        background-color: #00cc66;
+        /* border-color: #1a252f; */
     }
 
     .alert-danger {
-        background-color: #2c3e50;
-        border-color: #1a252f;
+        background-color: #ff3300                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ;
+        /* border-color: #1a252f; */
     }
 
     .fade-out {
@@ -96,7 +96,7 @@
                             <?php endif; ?>
                             <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
                             <!-- <li><a href="#"><img src="http://localhost/Forms_Clone/assets/images/Subbu.png" alt="Subbu"></a></li> -->
-                            <li><a href="#"><span class="glyphicon glyphicon-user" style="font-size: 20px; color: #1b263a;" title="Profile"></span></a></li>
+                            <li><a href="<?php echo site_url('profile'); ?>"><span class="glyphicon glyphicon-user" style="font-size: 20px; color: #1b263a;" title="Profile"></span></a></li>
                         <?php endif; ?>
                         <!-- <li><a href="view_form.html" target="_blank" title="View Form"><span class="glyphicon glyphicon-eye-open"></span></a></li>
                         <li><a href="#" title="Back"><span class="glyphicon glyphicon-step-backward"></span></a></li>
@@ -116,7 +116,7 @@
     <?php endif; ?>
 
     <?php if($this->session->flashdata('login_failed')): ?>
-        <p class="alert alert-danger fade-out"><?php echo $this->session->flashdata('login_failed'); ?></p>
+        <p class="alert alert-danger fade-out""><?php echo $this->session->flashdata('login_failed'); ?></p>
     <?php endif; ?>
 
     <?php if($this->session->flashdata('user_loggedin')): ?>

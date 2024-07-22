@@ -95,4 +95,14 @@
 				return false;
 			}
 		}
+
+        public function profile(){
+            $user_id = $this->session->userdata('user_id'); // Get the logged-in user's ID
+            $data['user'] = $this->UserModel->user_data($user_id); // Fetch user data
+			$this->session->set_userdata('current_page', 'create');
+            $data['title'] = 'Profile'; // Set the title for the profile page
+            $this->load->view('Templates/header'); // Load header
+            $this->load->view('profile', $data); // Load profile view
+            $this->load->view('Templates/footer'); // Load footer
+        }
     }
