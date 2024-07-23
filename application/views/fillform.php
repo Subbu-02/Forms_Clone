@@ -13,5 +13,5 @@
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
-    <button class="btn btn-primary" style="display: block; margin: 20px auto;" onclick="history.back()">Back</button>
+    <a style="margin: 20px 523px;" href="<?= base_url('home'); ?>" class="btn btn-primary">Back</a>
 </div>

@@ -10,7 +10,10 @@
             $this->form_validation->set_rules('password2', 'Confirm Password', 'matches[password]');
 
             if($this->form_validation->run() === FALSE){
-                $this->load->view('Templates/header');
+				$errors = validation_errors();
+				$this->session->set_flashdata('form_errors', $errors);
+				$data['error'] = $errors;
+                $this->load->view('Templates/header', $data);
                 $this->load->view('users/register', $data);
                 $this->load->view('Templates/footer');
             }

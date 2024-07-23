@@ -22,7 +22,13 @@ function confirmDeletion(formId) {
         <?php foreach ($forms as $form): ?>
             <div class="form-card <?php echo $form['status']; ?>" style="width: calc(45% - 10px); padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
                 <h2><?php echo $form['form_title']; ?></h2>
-                <p>Status: <?php echo ucfirst($form['status']); ?></p>
+                <p>Status: <?php echo ucfirst($form['status']);
+                if($form['modified_at']):
+                    echo "<br>Last modified at: " . $form['modified_at'];
+                else:
+                    echo "<br>Created at: " . $form['created_at'];
+                endif;
+                ?></p>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <a href="<?= base_url('Forms/view/') . $form['form_id']; ?>" class="btn btn-primary">View</a>

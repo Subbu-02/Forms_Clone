@@ -72,8 +72,8 @@
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
+                <button type="button" class="btn btn-primary" style="color: #fff;" onclick="location.href='<?php echo site_url('fillform'); ?>';">Back</button>
                 <button type="submit" form="form-respond" class="btn btn-primary">Submit</button>
-                <button class="btn btn-primary mt-3" onclick="history.back()">Back</button>
             </div>
         </div>
     </div>

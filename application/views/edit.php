@@ -102,6 +102,7 @@
         <div class="add-question-container">
             <button type="button" id="add-question" class="btn btn-secondary add-question-btn"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
+        <a href="<?= base_url('home'); ?>" class="btn btn-primary">Back</a>
         <button type="submit" form="form-edit" class="btn btn-primary">Save Draft</button>
         <input type="hidden" id="questions-order" name="questions_order" value="">
     </div>

@@ -43,7 +43,7 @@
     }
 
     .fade-out {
-        animation: fadeOut 5s forwards;
+        animation: fadeOut 15s forwards;
     }
 
     @keyframes fadeOut {
@@ -78,10 +78,10 @@
                             <li><a href="<?php echo base_url(); ?>categories/create">Create Category</a></li> -->
                             <?php if ($this->session->userdata('current_page') == 'home'): ?>
                             <li>
-                                <button type="button" class="btn btn-primary" style="color: #fff;" onclick="location.href='<?php echo site_url('fillform'); ?>';">Fill Form</button>
+                                <button type="button" class="btn btn-success" style="color: #fff;" onclick="location.href='<?php echo site_url('fillform'); ?>';">Fill Form</button>
                             </li>
                             <li>
-                                <button type="button" class="btn btn-primary" style="color: #fff;" onclick="location.href='<?php echo site_url('create'); ?>';">Create Form</button>
+                                <button type="button" class="btn btn-success" style="color: #fff;" onclick="location.href='<?php echo site_url('create'); ?>';">Create Form</button>
                             </li>
                             <?php endif; ?>
                             <?php if ($this->session->userdata('current_page') == 'edit'): ?>
@@ -91,7 +91,7 @@
                             <?php endif; ?>
                             <?php if ($this->session->userdata('current_page') == 'responses'): ?>
                             <li>
-                                <button type="button" class="btn btn-primary" style="color: #fff;" onclick="location.href='<?php echo site_url('responses/responseStats/'.$form_id); ?>';">Response Summary</button>
+                                <button type="button" class="btn btn-success" style="color: #fff;" onclick="location.href='<?php echo site_url('responses/responseStats/'.$form_id); ?>';">Response Summary</button>
                             </li>
                             <?php endif; ?>
                             <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
@@ -101,7 +101,7 @@
                         <!-- <li><a href="view_form.html" target="_blank" title="View Form"><span class="glyphicon glyphicon-eye-open"></span></a></li>
                         <li><a href="#" title="Back"><span class="glyphicon glyphicon-step-backward"></span></a></li>
                         <li><a href="#" title="Next"><span class="glyphicon glyphicon-step-forward"></span></a></li>
-                        <li><a href="#"><button type="button" class="btn btn-primary">Send</button></a></li>
+                        <li><a href="#"><button type="button" class="btn btn-success">Send</button></a></li>
                         <li><a href="#" title="Options"><span class="glyphicon glyphicon-option-vertical"></span></a></li> -->
                         
                     </ul>
@@ -112,21 +112,25 @@
 
     <div class="container">
     <?php if($this->session->flashdata('user_registered')): ?>
-        <p class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_registered'); ?></p>
+        <span class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_registered'); ?></span>
     <?php endif; ?>
 
     <?php if($this->session->flashdata('login_failed')): ?>
-        <p class="alert alert-danger fade-out""><?php echo $this->session->flashdata('login_failed'); ?></p>
+        <span class="alert alert-danger fade-out""><?php echo $this->session->flashdata('login_failed'); ?></span>
     <?php endif; ?>
 
     <?php if($this->session->flashdata('user_loggedin')): ?>
-        <p class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_loggedin'); ?></p>
+        <span class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_loggedin'); ?></span>
     <?php endif; ?>
 
     <?php if($this->session->flashdata('user_loggedout')): ?>
-        <p class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_loggedout'); ?></p>
+        <span class="alert alert-success fade-out"><?php echo $this->session->flashdata('user_loggedout'); ?></span>
     <?php endif; ?>
-</div>
+
+    <?php if($this->session->flashdata('form_errors')): ?>
+        <span class="alert alert-danger fade-out"><?php echo $this->session->flashdata('form_errors'); ?></span>
+    <?php endif; ?>
+    </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

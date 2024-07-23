@@ -6,11 +6,13 @@ class FormModel extends CI_Model {
 
     public function get_forms($user_id) {
         $this->db->where('user_id', $user_id);
+        $this->db->where('deleted_at', NULL);
         $query = $this->db->get('forms');
         return $query->result_array();
     }
 
     public function get_all_forms() {
+        $this->db->where('deleted_at', NULL);
         $query = $this->db->get('forms');
         return $query->result_array();
     }
@@ -29,7 +31,7 @@ class FormModel extends CI_Model {
     public function deleteForm($form_id)
     {
         $this->db->where('form_id', $form_id);
-        $this->db->delete('forms');
+        $this->db->update('forms', ['deleted_at' => date('Y-m-d H:i:s')]);
     }
         
     public function get_questions($form_id) {

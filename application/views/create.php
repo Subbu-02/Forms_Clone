@@ -9,7 +9,7 @@
             <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description"></textarea>
         </div>
+        <a href="<?= base_url('home'); ?>" class="btn btn-primary">Back</a>
         <button type="submit" class="btn btn-success">Create</button>
-        <button class="btn btn-primary" onclick="history.back()">Back</button><br>
     </form>
 </div>

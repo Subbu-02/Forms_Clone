@@ -25,7 +25,7 @@
             </tbody>
         </table>
     </div>
-    <button class="btn btn-primary mt-3" onclick="history.back()">Back</button>
+    <a href="<?= base_url('home'); ?>" class="btn btn-primary">Back</a>
 </div>
 <br>
 

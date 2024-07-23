@@ -9,6 +9,12 @@ class Forms extends CI_Controller {
 		}
 		$this->session->set_userdata('current_page', 'home');
         $data['forms'] = $this->FormModel->get_forms($this->session->userdata('user_id'));
+        // Sort forms by modified_at, if null use created_at
+        usort($data['forms'], function($a, $b) {
+            $dateA = !empty($a['modified_at']) ? $a['modified_at'] : $a['created_at'];
+            $dateB = !empty($b['modified_at']) ? $b['modified_at'] : $b['created_at'];
+            return $dateB <=> $dateA;
+        });
         $this->load->view('Templates/header');
         $this->load->view('home', $data);
         $this->load->view('Templates/footer');
@@ -59,6 +65,11 @@ class Forms extends CI_Controller {
 		}
 		$this->session->set_userdata('current_page', 'fillform');
 		$data['forms'] = $this->FormModel->get_all_forms();
+		usort($data['forms'], function($a, $b) {
+            $dateA = !empty($a['modified_at']) ? $a['modified_at'] : $a['created_at'];
+            $dateB = !empty($b['modified_at']) ? $b['modified_at'] : $b['created_at'];
+            return $dateB <=> $dateA;
+        });
 		$this->load->view('Templates/header');
         $this->load->view('fillform', $data);
         $this->load->view('Templates/footer');
@@ -84,7 +95,8 @@ class Forms extends CI_Controller {
 			'user_id' => $this->session->userdata('user_id'),
 			'form_title' => $this->input->post('title'),
 			'form_description' => $this->input->post('description'),
-			'status' => 'draft'
+			'status' => 'draft',
+			'modified_at' => date('Y-m-d H:i:s')
 		);
 		$questions = $this->input->post('questions');
         if ($questions && is_array($questions)) {
@@ -107,7 +119,8 @@ class Forms extends CI_Controller {
         $questions = $this->input->post('questions'); 
         $form_data = array(
             'form_title' => $form_title,
-            'form_description' => $form_description
+            'form_description' => $form_description,
+			'modified_at' => date('Y-m-d H:i:s')
         );
         // Update form details
         $this->FormModel->updateForm($form_id, $form_data);
@@ -148,7 +161,8 @@ class Forms extends CI_Controller {
         $form_data = array(
             'form_title' => $form_title,
             'form_description' => $form_description,
-			'status' => $status
+			'status' => $status,
+			'modified_at' => date('Y-m-d H:i:s')
         );
         // Update form details
         $this->FormModel->updateForm($form_id, $form_data);

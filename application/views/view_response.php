@@ -24,6 +24,26 @@
             color: red;
             font-weight: bold;
         }
+        .info-container {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space between items */
+            align-items: flex-start; /* Align items at the start */
+            margin-top: 20px; /* Add space above */
+        }
+        .user-info {
+            text-align: right; /* Align text to the right */
+            font-size: 16px; /* Adjust font size */
+        }
+        .user-info h3 {
+            margin: 0; /* Remove margin for a cleaner look */
+            font-weight: bold; /* Make the name bold */
+        }
+        .user-info p {
+            margin: 5px 0; /* Add vertical spacing between paragraphs */
+        }
+        .form-details {
+            flex: 1; /* Allow form details to take available space */
+        }
     </style>
 </head>
 <body>
@@ -35,13 +55,18 @@
                 $response[$key] = trim($value, '"');
             }?>
 
-            <h1 class="form-title" style="font-size: 50px;"><?= htmlspecialchars($form['form_title']) ?></h1>
-            <div class="user-info">
-                <p><h3><?= htmlspecialchars($user->name) ?></h3>
-                Email: <?= htmlspecialchars($user->email) ?></p>
-                <p>Filled at: <?= htmlspecialchars($created_at) ?></p>
+            <div class="info-container">
+                <div class="form-details">
+                    <h1 class="form-title" style="font-size: 50px;"><?= htmlspecialchars($form['form_title']) ?></h1>
+                    <p class="form-description" style="font-size: 20px;"><?= htmlspecialchars($form['form_description']) ?></p>
+                </div>
+                <div class="user-info">
+                    <h3><?= htmlspecialchars($user->name) ?></h3>
+                    <p>Username: <?= htmlspecialchars($user->username) ?></p>
+                    <p>Email: <?= htmlspecialchars($user->email) ?></p>
+                    <p>Filled at: <?= htmlspecialchars($created_at) ?></p>
+                </div>
             </div>
-            <p class="form-description" style="font-size: 20px;"><?= htmlspecialchars($form['form_description']) ?></p>
             <?php foreach ($questions as $index => $question): ?>
                 <?php $options = json_decode($question['options'], true); ?>
                 <div class="question-container">
@@ -76,7 +101,7 @@
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
-            <button class="btn btn-primary mt-3" onclick="history.back()">Back to Responses</button>
+            <a href="<?php echo site_url('responses/responses_fetch/'.$form['form_id']); ?>" class="btn btn-primary">Back to Responses</a>
         </div>
     </div>
 </div>
