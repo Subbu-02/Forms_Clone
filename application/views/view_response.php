@@ -67,7 +67,7 @@
                     <p>Filled at: <?= htmlspecialchars($created_at) ?></p>
                 </div>
             </div>
-            <?php foreach ($questions as $index => $question): ?>
+            <?php foreach ($questions as $index => $question): ?>                
                 <?php $options = json_decode($question['options'], true); ?>
                 <div class="question-container">
                     <h4>
@@ -78,9 +78,12 @@
                     </h4>
                     <?php if (in_array($question['type'], ['1', '4'])): ?>
                         <?php $response[$index] = json_decode($response[$index]);?>
-                        <?php foreach ($response[$index] as $key => $val) {
-                            $response[$index][$key] = trim($val, '"');
+                        <?php if ($response[$index]=="null") {
+                            foreach ($response[$index] as $key => $val) {
+                                $response[$index][$key] = trim($val, '"');
+                            }
                         }?>
+                        
                         <?php foreach ($options as $option): ?>
                             <div class="option form-check">
                                 <input class="form-check-input" type="<?= $question['type'] === '4' ? 'checkbox' : 'radio' ?>"

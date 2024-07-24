@@ -24,7 +24,7 @@
         <form id="form-edit" action="<?= base_url('forms/saveForm') ?>" method="POST">
             <div class="form-header">
             <input type="hidden" id="form_id" name="form_id" value="<?php echo isset($form['form_id']) ? $form['form_id'] : ''; ?>">
-            <input type="text" class="form-title form-control" id="form_title" name="form_title" value="<?php echo isset($form['form_title']) ? $form['form_title'] : ''; ?>" style="border-radius: 5px; height: 75px"><br>
+            <input type="text" class="form-title form-control" id="form_title" name="form_title" value="<?php echo isset($form['form_title']) ? $form['form_title'] : ''; ?>" style="border-radius: 5px; height: 75px" required autofocus><br>
             <input type="text" class="form-description form-control" id="form_description" name="form_description" value="<?php echo isset($form['form_description']) ? $form['form_description'] : ''; ?>" style="border-radius: 5px;">
             </div>
             <div class="form-body">
@@ -38,7 +38,7 @@
                             <div class="form-group question-container" id="question-<?php echo $question['question_id']; ?>">
                                 <div class="question-content">
                                     <input type="hidden" class="user-id" value="<?php echo $form['user_id'];?>">
-                                    <input type="text" class="form-control form-question" name="question_text[<?php echo $question['question_id']; ?>]" placeholder="Question <?php echo $question['question_id']; ?>" value="<?php echo htmlspecialchars($question['question_text']); ?>">
+                                    <input type="text" class="form-control form-question" name="question_text[<?php echo $question['question_id']; ?>]" placeholder="Question <?php echo $question['question_id']; ?>" value="<?php echo htmlspecialchars($question['question_text']); ?>" required autofocus>
                                     <select class="form-control question-type" data-question-id="<?php echo $question['question_id']; ?>">
                                     <?php
                                     $questionId = $question['question_id'];
@@ -62,7 +62,7 @@
                                             }
                                             ?>
                                             <div class="option">
-                                                <input type="text" class="form-control option-input" placeholder="Option 1" value="<?php echo $option; ?>">
+                                                <input type="text" class="form-control option-input" placeholder="Option 1" value="<?php echo $option; ?>" required autofocus>
                                                 <button type="button" class="remove-option" data-question-id="<?php echo $question['question_id']; ?>">&times;</button>
                                                 <br>
                                             </div>
@@ -121,11 +121,26 @@
             event.preventDefault(); // Prevent the default form submission
 
             var questions = [];
+            var formTitle = $('#form_title').val().trim();
+            var formDescription = $('#form_description').val().trim();
+
+            // Check if form title or description is empty
+            if (!formTitle) {
+                alert('Form title cannot be empty.');
+                return;
+            }
+
             $('.question-container').each(function() {
                 var questionId = $(this).attr('id').split('-')[1];
-                var questionText = $(this).find('.form-question').val();
+                var questionText = $(this).find('.form-question').val().trim();
+
+                // Check if question text is empty
+                if (!questionText) {
+                    alert('Question text cannot be empty.');
+                    return false; // Exit the each loop
+                }
+
                 var questionType = $(this).find('.question-type').val();
-                // var userId = $(this).find('.user-id').val();
                 switch (questionType) {
                     case 'multiple-choice':
                         questionType = 1;
@@ -190,11 +205,25 @@
             event.preventDefault(); // Prevent the default form submission
 
             var questions = [];
+            var formTitle = $('#form_title').val().trim();
+
+            // Check if form title is empty
+            if (!formTitle) {
+                alert('Form title cannot be empty.');
+                return;
+            }
+
             $('.question-container').each(function() {
                 var questionId = $(this).attr('id').split('-')[1];
                 var questionText = $(this).find('.form-question').val();
+
+                // Check if question text is empty
+                if (!questionText) {
+                    alert('Question text cannot be empty.');
+                    return false; // Exit the each loop
+                }
+
                 var questionType = $(this).find('.question-type').val();
-                // var userId = $(this).find('.user-id').val();
                 switch (questionType) {
                     case 'multiple-choice':
                         questionType = 1;

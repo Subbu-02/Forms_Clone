@@ -50,6 +50,11 @@
         0% { opacity: 1; }
         100% { opacity: 0; }
     }
+
+    body {
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+    }
 </style>
 </head>
 <body>

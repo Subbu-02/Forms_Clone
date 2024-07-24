@@ -99,14 +99,15 @@ class FormModel extends CI_Model {
     }
 
     public function addResponse($form_id, $responses, $user_id){
+        $current_timestamp = date('Y-m-d H:i:s');
         foreach ($responses as $response) {
             $data = [
                 'form_id' => $form_id,
                 'question_id' => $response['question_id'],
                 'created_by' => $user_id, // Assuming 'created_by' should be the 'question_id'
                 // 'response' => is_array($response['response']) ? json_encode($response['response']) : $response['response'],
-                'response' => json_encode($response['response'])
-                // 'created_at' => date('Y-m-d H:i:s'), // Current timestamp
+                'response' => json_encode($response['response']),
+                'created_at' => $current_timestamp // Current timestamp
             ];
             $this->db->insert('responses', $data);
         }

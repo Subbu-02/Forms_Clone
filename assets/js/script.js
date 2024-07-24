@@ -22,7 +22,7 @@ $(document).ready(function () {
             questionData.options.forEach((option, index) => {
                 optionsHtml += `
                     <div class="option">
-                        <input type="text" class="form-control option-input" value="${option}">
+                        <input type="text" class="form-control option-input" value="${option}" required autofocus>
                         <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
                     </div>
                 `;
@@ -30,7 +30,7 @@ $(document).ready(function () {
         } else if (['multiple-choice', 'checkboxes', 'dropdown'].includes(questionType)) {
             optionsHtml = `
                 <div class="option">
-                    <input type="text" class="form-control option-input" placeholder="Option 1">
+                    <input type="text" class="form-control option-input" placeholder="Option 1" required autofocus>
                     <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
                 </div>
                 <button type="button" class="btn btn-secondary add-option" data-question-id="${questionId}">Add option</button>
@@ -41,7 +41,7 @@ $(document).ready(function () {
         return `
             <div class="form-group question-container" id="question-${questionId}">
                 <div class="question-content">
-                    <input type="text" class="form-control form-question" placeholder="${questionText}" value="${questionText}">
+                    <input type="text" class="form-control form-question" placeholder="${questionText}">
                     <select class="form-control question-type" data-question-id="${questionId}">
                         ${types.map((type, index) => `<option value="${type}" ${questionType === type ? 'selected' : ''}>${type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')}</option>`).join('')}
                     </select>
@@ -128,7 +128,7 @@ $(document).ready(function () {
             storedOptions.forEach((option, index) => {
                 optionsHtml += `
                     <div class="option">
-                        <input type="text" class="form-control option-input" value="${option}">
+                        <input type="text" class="form-control option-input" value="${option}" required autofocus>
                         <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
                     </div>
                 `;
@@ -167,7 +167,7 @@ $(document).ready(function () {
         const optionCount = $(`#form-options-${questionId} .option`).length + 1;
         const newOptionHtml = `
             <div class="option">
-                <input type="text" class="form-control option-input" placeholder="Option ${optionCount}">
+                <input type="text" class="form-control option-input" placeholder="Option ${optionCount}" required autofocus>
                 <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
             </div>
         `;
@@ -191,6 +191,7 @@ $(document).ready(function () {
         const questionId = $(this).data('question-id');
         const otherOptionHtml = `
             <div class="option">
+                <br>
                 <input type="text" class="form-control option-input" value="Other" readonly>
                 <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
             </div>
