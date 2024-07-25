@@ -7,6 +7,8 @@
 <div class="container mt-5">
     <h2 class="mb-4">All Responses</h2>
     <hr style='border-top: 2px solid #1b263a; height:10px; margin-left: auto; margin-right:auto;'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <?php
 
     // Organize questions by their IDs for easy lookup
@@ -23,7 +25,7 @@ use function PHPSTORM_META\type;
     foreach ($responses as $response) {
         $question_responses[$response->question_id][] = $response;
     }
-
+    // print_r($responses);
     // Display responses ordered by questions
     foreach ($questions as $question) {
         $question_id = $question['question_id'];
@@ -31,39 +33,53 @@ use function PHPSTORM_META\type;
             $question_text = $question['question_text'];
             // Check if the question has options and is an array
             $options_type = gettype($question['options']);
-            print($options_type);
-            if (!empty($question['options']) && is_array($question['options'])) {
-                // Ensure options are structured correctly
-                if (array_is_list($question['options'])) {
-                    // Prepare data for the pie chart
-                    $option_counts = array_fill_keys(array_column($question['options'], 'option_text'), 0);
-                    foreach ($question_responses[$question_id] as $response) {
-                        $response_text = is_array($response->response) ? implode(", ", $response->response) : $response->response;
-                        if (isset($option_counts[$response_text])) {
-                            $option_counts[$response_text]++;
-                        }
+            // print($options_type);
+            $question['options'] = json_decode($question['options'], true);
+            // print_r($question['options']);
+            // print_r($question_responses[$question_id]);
+            if (!empty($question['options']) && is_array($question['options']) && ($question['type'] == 1 || $question['type'] == 5)) {
+                // Prepare data for the pie chart
+                $option_counts = array_fill_keys($question['options'], 0);
+                // print_r($option_counts);
+                foreach ($question_responses[$question_id] as $response) {
+                    $response_text = $response->response;
+                    // Remove quotes if the response is a string
+                    $response_text = is_string($response_text) ? trim($response_text, '"') : $response_text;
+                    if (isset($option_counts[$response_text])) {
+                        $option_counts[$response_text]++;
                     }
-                    $chart_data = json_encode(array_values($option_counts));
-                    $chart_labels = json_encode(array_keys($option_counts));
-                    echo "<canvas id='chart_$question_id' width='400' height='200'></canvas>";
-                    echo "<script>
-                        var ctx = document.getElementById('chart_$question_id').getContext('2d');
-                        var myPieChart = new Chart(ctx, {
-                            type: 'pie',
-                            data: {
-                                labels: $chart_labels,
-                                datasets: [{
-                                    data: $chart_data,
-                                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-                                }]
-                            }
-                        });
-                    </script>";
-                } else {
-                    // Handle the case where options are not structured correctly
-                    echo "<p>Options for question '{$question_text}' are not structured correctly.</p>";
                 }
-            }
+                $chart_data = json_encode(array_values($option_counts));
+                $chart_labels = json_encode(array_keys($option_counts));
+                
+                // echo "<h4 class='mt-4'>Question: {$question_text}</h4>";
+                // echo "<canvas class='chart' id='chart_$question_id' style='height:500px; width: 500px;'></canvas>";
+                echo "<script>
+                    var ctx = document.getElementById('chart_$question_id').getContext('2d');
+                    var myPieChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: $chart_labels,
+                            datasets: [{
+                                data: $chart_data,
+                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Response Distribution'
+                                }
+                            }
+                        }
+                    });
+                </script>";
+            } 
             echo "<div style='text-align: center;'></div><h4 class='mt-4'>Question: <strong>{$question_text}</strong></h4>";
             echo "<table id='table_$question_id' class='display' >";
             echo "<thead><tr><th>Response</th><th>Submitted By</th><th>Submitted At</th></tr></thead><tbody>";
@@ -91,7 +107,6 @@ use function PHPSTORM_META\type;
 <br>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     $(document).ready(function() {
         <?php foreach ($questions as $question): ?>
@@ -99,3 +114,118 @@ use function PHPSTORM_META\type;
         <?php endforeach; ?>
     });
 </script>
+
+<?php
+// Check if $questions is set and is an array
+if (!isset($questions) || !is_array($questions)) {
+    echo "<p>No questions found.</p>";
+} else {
+    // Group responses by question ID
+    $grouped_responses = array();
+    foreach ($responses as $response) {
+        $question_id = $response->question_id;
+        if (!isset($grouped_responses[$question_id])) {
+            $grouped_responses[$question_id] = array();
+        }
+        $grouped_responses[$question_id][] = $response;
+    }
+
+    // Function to generate random color
+    function random_color() {
+        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+    }
+
+    // Loop through each question and create a pie chart for types 1 and 5
+    foreach ($questions as $question) {
+        if (!isset($question['question_id']) || !isset($question['question_type']) || !isset($question['question_text'])) {
+            continue; // Skip this question if it's missing required fields
+        }
+
+        $question_id = $question['question_id'];
+        $question_type = $question['question_type'];
+        
+        // Only process question types 1 and 5
+        if ($question_type == 1 || $question_type == 5) {
+            if (isset($grouped_responses[$question_id])) {
+                $question_responses = $grouped_responses[$question_id];
+                
+                // Count occurrences of each response
+                $response_counts = array();
+                foreach ($question_responses as $response) {
+                    $answer = trim($response->response, '"');
+                    if ($question_type == 5) {
+                        // For multiple choice, split the response
+                        $choices = json_decode($answer, true);
+                        if (is_array($choices)) {
+                            foreach ($choices as $choice) {
+                                if (!isset($response_counts[$choice])) {
+                                    $response_counts[$choice] = 1;
+                                } else {
+                                    $response_counts[$choice]++;
+                                }
+                            }
+                        }
+                    } else {
+                        if (!isset($response_counts[$answer])) {
+                            $response_counts[$answer] = 1;
+                        } else {
+                            $response_counts[$answer]++;
+                        }
+                    }
+                }
+
+                // Only create chart if there are responses
+                if (!empty($response_counts)) {
+                    // Prepare data for Chart.js
+                    $labels = json_encode(array_keys($response_counts));
+                    $data = json_encode(array_values($response_counts));
+
+                    // Generate colors for each slice
+                    $colors = json_encode(array_map('random_color', $response_counts));
+
+                    echo "<h4 class='mt-4'>{$question['question_text']}</h4>";
+                    // echo "<canvas id='chart_$question_id' style='height:500px; width: 500px;'></canvas>";
+
+                    echo "<script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var ctx = document.getElementById('chart_$question_id').getContext('2d');
+                        var myPieChart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: $labels,
+                                datasets: [{
+                                    data: $data,
+                                    backgroundColor: $colors
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Response Distribution'
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    </script>";
+                } else {
+                    echo "<p>No responses for question: {$question['question_text']}</p>";
+                }
+            } else {
+                echo "<p>No responses found for question: {$question['question_text']}</p>";
+            }
+        }
+    }
+}
+?>
+<style>
+    canvas{
+        height: 500px;
+        width: 500px;
+    }
+</style>

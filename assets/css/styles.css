@@ -473,7 +473,7 @@ a:hover {
 
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
-    .navbar-header, .navbar-right {
+    .navbar-header{
         display: block;
         width: 100%;
     }
@@ -493,19 +493,6 @@ a:hover {
 
     .form-question, .form-options input, .form-options button {
         font-size: 14px;
-    }
-
-    .navbar-tabs {
-        flex-direction: column;
-    }
-
-    .navbar-tabs > li {
-        width: 100%;
-    }
-
-    .navbar-tabs > li > a {
-        text-align: center;
-        padding: 10px;
     }
 
     .option input, .option label {

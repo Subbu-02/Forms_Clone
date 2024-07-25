@@ -38,7 +38,7 @@
     }
 
     .alert-danger {
-        background-color: #ff3300                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ;
+        background-color: #ff3300                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ;
         /* border-color: #1a252f; */
     }
 
@@ -65,7 +65,7 @@
                     <div class="navbar-brand">
                         <p style="padding: 0;">
                             <!-- The image should redirect to home page -->
-                            <a href="<?php echo base_url(); ?>home"><img src="http://localhost/Forms_Clone/assets/images/aissel_logo.png" alt="Logo"></a>
+                            <a href="<?php echo base_url(); ?>home"><img src="http://localhost/Forms_Clone/assets/images/aissel_logo.png" alt="Logo" style="height: 50px;"></a>
                             <!-- <input type="text" class="form-control" jsname="YPqjbf" autocomplete="off" tabindex="0" aria-label="Document title" value="Untitled form" dir="auto" data-initial-dir="auto" data-initial-value="Untitled form" maxlength="25">  -->
                             <!-- <a href="#" title="Save to Drive"><span class="glyphicon glyphicon-folder-open"></span></a>
                             <a href="#" title="Star Document" onclick="toggleStar()"><span id="star-icon" class="glyphicon glyphicon-star" aria-hidden="true"></span></a> -->
@@ -147,3 +147,108 @@
         }, 3000); // Change this value to set how long the message should be visible
     });
 </script>
+<style>
+    /* General Reset and Body */
+*, *::before, *::after, html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f0f4f7;
+}
+
+/* Header and Navbar */
+#header-nav {
+    width: 100%;
+    background-color: #0195db;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    border: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 0%;
+}
+
+.navbar-brand img {
+    filter: brightness(0) invert(1);
+    height: 50px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: transparent;
+    opacity: 0.7;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    background-color: transparent;
+    opacity: 0.7;
+}
+
+.navbar-header {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    border-radius: 0%;
+    justify-content: flex-start; /* Aligns navbar header to the left */
+}
+
+.container-fluid {
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Pushes navbar right to the right */
+}
+
+.navbar-right .nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right .nav li {
+    margin-left: 10px;
+}
+
+/* .navbar-right .nav li a button {
+    color: #000;
+    font-size: 1em;
+    background-color: #149b9b;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+.navbar-right .nav li a img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+} */
+
+@media (max-width: 600px) {
+    .navbar-right .nav li button {
+        margin-top: 10px;
+        padding: 5px 0px;
+        font-size: 0.8em;
+    }
+
+    .navbar-right .nav li a {
+        margin-top: 10px;
+        padding: 5px 0px;
+        font-size: 0.8em;
+    }    
+}
+
+</style>

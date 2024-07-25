@@ -45,7 +45,7 @@
                             <?php foreach ($options as $option): ?>
                                 <div class="option form-check">
                                     <input class="form-check-input" type="<?= $question['type'] === '4' ? 'checkbox' : 'radio' ?>" disabled>
-                                    <label class="form-check-label"><?= $option ?></label>
+                                    <label class="form-check-label" style="margin-left: 10px;"><?= $option ?></label>
                                 </div>
                             <?php endforeach; ?>
                         <?php elseif ($question['type'] === '2'): ?>

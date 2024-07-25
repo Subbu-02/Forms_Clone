@@ -1,6 +1,6 @@
             <div class="navbar-tabs">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#">Questions</a></li>
+                    <li class="active" style="margin-bottom: 0;"><a href="#">Questions</a></li>
                     <!-- <li class="disabled"><a href="#" class="hover-only">Responses</a></li>
                     <li class="disabled"><a href="#" class="hover-only">Settings</a></li> -->
                 </ul>
@@ -117,6 +117,36 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
+        // Add this new function to create the options container
+        function createOptionsContainer(questionId) {
+            return `
+                <div class="form-options" id="form-options-${questionId}">
+                    <div class="option">
+                        <input type="text" class="form-control option-input" placeholder="Option 1" value="Option 1" required autofocus>
+                        <button type="button" class="remove-option" data-question-id="${questionId}">&times;</button>
+                        <br>
+                    </div>
+                    <button type="button" class="btn btn-secondary add-option" data-question-id="${questionId}">Add option</button>
+                    <button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>
+                </div>
+            `;
+        }
+
+        // Add event listener for question type change
+        $(document).on('change', '.question-type', function() {
+            var questionId = $(this).data('question-id');
+            var questionType = $(this).val();
+            var optionsContainer = $(`#form-options-${questionId}`);
+
+            if (['multiple-choice', 'checkboxes', 'dropdown'].includes(questionType)) {
+                if (optionsContainer.length === 0) {
+                    $(this).closest('.question-content').append(createOptionsContainer(questionId));
+                }
+            } else {
+                optionsContainer.remove();
+            }
+        });
+
         $('#form-edit').submit(function(event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -284,5 +314,40 @@
                 }
             });
         });
+
+        // Function to select a question
+        function selectQuestion(questionId) {
+            $('.question-container').removeClass('selected');
+            $(`#question-${questionId}`).addClass('selected');
+        }
+
+        // Select the first question by default
+        selectQuestion($('.question-container:first').attr('id').split('-')[1]);
+
+        // Modify the existing add question functionality
+        $(document).on('click', '.add-question-btn', function() {
+            var questionId = $(this).data('question-id');
+            addQuestion(questionId);
+        });
+
+        function addQuestion(afterQuestionId) {
+            // ... existing addQuestion code ...
+
+            // After adding the new question, select it
+            var newQuestionId = $('.question-container').length;
+            selectQuestion(newQuestionId);
+        }
+
+        // Add click event to select questions
+        $(document).on('click', '.question-container', function() {
+            var questionId = $(this).attr('id').split('-')[1];
+            selectQuestion(questionId);
+        });
     });
 </script>
+<style>
+    .question-container.selected {
+        border: 2px solid #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+</style>

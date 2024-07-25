@@ -13,6 +13,25 @@
         }
         .form-title {
             margin-bottom: 10px;
+            font-size: 50px; /* Default size */
+        }
+
+        .form-description{
+            font-size: 20px;
+        }
+        @media (max-width: 767px) {
+            .form-title {
+                font-size: 25px; /* Smaller size for screens < 768px */
+            }
+
+            .form-description{
+                font-size: 15px;
+            }
+        }
+        @media (max-width: 767px) {
+            .user-info p {
+                font-size: 10px; /* Smaller size for screens < 768px */
+            }
         }
         .form-description {
             margin-bottom: 20px;
@@ -57,8 +76,8 @@
 
             <div class="info-container">
                 <div class="form-details">
-                    <h1 class="form-title" style="font-size: 50px;"><?= htmlspecialchars($form['form_title']) ?></h1>
-                    <p class="form-description" style="font-size: 20px;"><?= htmlspecialchars($form['form_description']) ?></p>
+                    <h1 class="form-title"><?= htmlspecialchars($form['form_title']) ?></h1>
+                    <p class="form-description"><?= htmlspecialchars($form['form_description']) ?></p>
                 </div>
                 <div class="user-info">
                     <h3><?= htmlspecialchars($user->name) ?></h3>
@@ -88,7 +107,7 @@
                             <div class="option form-check">
                                 <input class="form-check-input" type="<?= $question['type'] === '4' ? 'checkbox' : 'radio' ?>"
                                        <?= is_array($response[$index]) && in_array($option, $response[$index]) ? 'checked' : '' ?> disabled>
-                                <label class="form-check-label"><?= htmlspecialchars($option) ?></label>
+                                <label class="form-check-label" style="margin-left: 10px;"><?= htmlspecialchars($option) ?></label>
                             </div>
                         <?php endforeach; ?>
                     <?php elseif ($question['type'] === '2'): ?>

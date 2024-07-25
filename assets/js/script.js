@@ -141,13 +141,13 @@ $(document).ready(function () {
                 optionsHtml += `
                     <button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>
                 `;
-                console.log("Hi from not dropdown", optionsHtml);
             }
         }
         
         formOptionsContainer.html(optionsHtml);
         console.log(`Options HTML updated for question ID ${questionId}:`, formOptionsContainer.html());
     });    
+       
     
 
     $(document).on('click', '.delete-btn', function () {
@@ -173,20 +173,20 @@ $(document).ready(function () {
         `;
         $(this).before(newOptionHtml);
     });
-
+    
     $(document).on('click', '.remove-option', function () {
         const optionDiv = $(this).closest('.option');
         const questionId = $(this).data('question-id');
-
+    
         if (optionDiv.find('input').val() === 'Other') {
             $(`#form-options-${questionId} .add-other`).remove();
             const addOtherButtonHtml = `<button type="button" class="btn btn-secondary add-other" data-question-id="${questionId}">Add Other</button>`;
             $(`#form-options-${questionId} .add-option`).after(addOtherButtonHtml);
         }
-
+    
         optionDiv.remove();
     });
-
+    
     $(document).on('click', '.add-other', function () {
         const questionId = $(this).data('question-id');
         const otherOptionHtml = `
@@ -198,7 +198,7 @@ $(document).ready(function () {
         `;
         $(this).before(otherOptionHtml);
         $(this).remove();
-    });
+    });    
 
     $(document).on('click', '.add-question-btn', function () {
         const questionId = $(this).data('question-id');
@@ -243,4 +243,7 @@ $(document).ready(function () {
 
     //     return false; // Prevent the default form submission
     // });
+
+    // Select the first question by default
+    selectQuestion(1);
 });
