@@ -54,10 +54,10 @@
         }
 
         .back-button {
-            width: 100%; Full width for smaller screens
-            text-align: center;
+            width: 100%; 
+            /*text-align: center;
             margin: 20px 0; /* Center the button */
-        }
+        } 
     }
 
     /* Ensure buttons are in a row for screens larger than 768px */
@@ -74,8 +74,8 @@
 
         .back-button {
             /* width: 100%; Full width for smaller screens */
-            text-align: center;
-            margin: 0 0 10px 10px;
+            /* text-align: center;
+            margin: 0 0 10px 10px; */
         }
     }
 </style>

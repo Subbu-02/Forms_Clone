@@ -99,6 +99,12 @@
                                 <button type="button" class="btn btn-success" style="color: #fff;" onclick="location.href='<?php echo site_url('responses/responseStats/'.$form_id); ?>';">Response Summary</button>
                             </li>
                             <?php endif; ?>
+                            <?php if ($this->session->userdata('current_page') == 'fillform'): ?>
+                            <li>
+                                <!-- <a href="<?= base_url('home'); ?>" class="btn btn-primary back-button" style="margin:0 20px 0 0; color:#ffffff;">Back</a> -->
+                                <button type="button" class="btn btn-primary back-button" style="color: #fff;" onclick="location.href='<?= base_url('home'); ?>';">Back</button>
+                            </li>
+                            <?php endif; ?>
                             <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
                             <!-- <li><a href="#"><img src="http://localhost/Forms_Clone/assets/images/Subbu.png" alt="Subbu"></a></li> -->
                             <li><a href="<?php echo site_url('profile'); ?>"><span class="glyphicon glyphicon-user" style="font-size: 20px; color: #1b263a;" title="Profile"></span></a></li>
