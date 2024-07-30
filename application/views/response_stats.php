@@ -31,29 +31,70 @@ use function PHPSTORM_META\type;
         $question_id = $question['question_id'];
         if (isset($question_responses[$question_id])) {
             $question_text = $question['question_text'];
-            // Check if the question has options and is an array
-            $options_type = gettype($question['options']);
-            // print($options_type);
             $question['options'] = json_decode($question['options'], true);
             // print_r($question['options']);
             // print_r($question_responses[$question_id]);
+            echo "<div style='text-align: center;'></div><h4 class='mt-4'>Question: <strong>{$question_text}</strong></h4>";
+            echo "<table id='table_$question_id' class='display' >";
+            echo "<thead><tr><th>Response</th><th>Submitted By</th><th>Submitted At</th></tr></thead><tbody>";
+
+            foreach ($question_responses[$question_id] as $response) {
+                $response_text = $response->response;
+                // Remove brackets, quotes, and add proper comma separation
+                if (is_string($response_text)) {
+                    $response_text = trim($response_text, '[]"');
+                    $response_array = explode('","', $response_text);
+                    $response_array = array_map('trim', $response_array);
+                    $response_array = array_filter($response_array, function($value) { return $value !== '' && $value !== 'null'; });
+                    $response_text = implode(', ', $response_array);
+                } elseif (is_array($response_text)) {
+                    $response_array = array_filter($response_text, function($value) { return $value !== '' && $value !== 'null'; });
+                    $response_text = implode(', ', $response_array);
+                } else {
+                    $response_text = '';
+                }
+                // Display a hyphen if the response is empty
+                $response_text = $response_text === '' ? '-' : $response_text; 
+                echo "<tr>";
+                echo "<td>{$response_text}</td>";
+                echo "<td>{$response->user_data->name}</td>";
+                echo "<td>{$response->created_at}</td>";
+                echo "</tr>";
+            }
+
+            echo "</tbody></table><br>";
             if (!empty($question['options']) && is_array($question['options']) && ($question['type'] == 1 || $question['type'] == 5)) {
                 // Prepare data for the pie chart
                 $option_counts = array_fill_keys($question['options'], 0);
                 // print_r($option_counts);
                 foreach ($question_responses[$question_id] as $response) {
                     $response_text = $response->response;
-                    // Remove quotes if the response is a string
-                    $response_text = is_string($response_text) ? trim($response_text, '"') : $response_text;
-                    if (isset($option_counts[$response_text])) {
-                        $option_counts[$response_text]++;
+                    // Remove brackets, quotes, and add proper comma separation
+                    if (is_string($response_text)) {
+                        $response_text = trim($response_text, '[]"');
+                        $response_array = explode('","', $response_text);
+                        $response_array = array_map('trim', $response_array);
+                        $response_array = array_filter($response_array, function($value) { return $value !== '' && $value !== 'null'; });
+                        $response_text = implode(', ', $response_array);
+                    } elseif (is_array($response_text)) {
+                        $response_array = array_filter($response_text, function($value) { return $value !== '' && $value !== 'null'; });
+                        $response_text = implode(', ', $response_array);
+                    } else {
+                        $response_array = [];
+                    }
+                    foreach ($response_array as $option) {
+                        if (isset($option_counts[$option])) {
+                            $option_counts[$option]++;
+                        }
                     }
                 }
+                // Remove options with zero count
+                $option_counts = array_filter($option_counts);
                 $chart_data = json_encode(array_values($option_counts));
                 $chart_labels = json_encode(array_keys($option_counts));
                 
                 // echo "<h4 class='mt-4'>Question: {$question_text}</h4>";
-                // echo "<canvas class='chart' id='chart_$question_id' style='height:500px; width: 500px;'></canvas>";
+                echo "<canvas class='chart' id='chart_$question_id'></canvas>";
                 echo "<script>
                     var ctx = document.getElementById('chart_$question_id').getContext('2d');
                     var myPieChart = new Chart(ctx, {
@@ -70,34 +111,24 @@ use function PHPSTORM_META\type;
                             plugins: {
                                 legend: {
                                     position: 'top',
+                                    labels: {
+                                        font: {
+                                            size: 16 // Increase label font size
+                                        }
+                                    }
                                 },
                                 title: {
                                     display: true,
-                                    text: 'Response Distribution'
+                                    text: 'Response Distribution',
+                                    font: {
+                                        size: 20 // Increase title font size
+                                    }
                                 }
                             }
                         }
                     });
                 </script>";
             } 
-            echo "<div style='text-align: center;'></div><h4 class='mt-4'>Question: <strong>{$question_text}</strong></h4>";
-            echo "<table id='table_$question_id' class='display' >";
-            echo "<thead><tr><th>Response</th><th>Submitted By</th><th>Submitted At</th></tr></thead><tbody>";
-
-            foreach ($question_responses[$question_id] as $response) {
-                $response_text = is_array($response->response) ? implode(", ", $response->response) : $response->response;
-                // Remove quotes if the response is a string
-                $response_text = trim($response_text, '"');
-                // Display a hyphen if the response is empty
-                $response_text = $response_text === '' ? '-' : $response_text; 
-                echo "<tr>";
-                echo "<td>{$response_text}</td>";
-                echo "<td>{$response->user_data->name}</td>";
-                echo "<td>{$response->created_at}</td>";
-                echo "</tr>";
-            }
-
-            echo "</tbody></table><br>";
         }
     }
     ?>
@@ -184,7 +215,7 @@ if (!isset($questions) || !is_array($questions)) {
                     $colors = json_encode(array_map('random_color', $response_counts));
 
                     echo "<h4 class='mt-4'>{$question['question_text']}</h4>";
-                    // echo "<canvas id='chart_$question_id' style='height:500px; width: 500px;'></canvas>";
+                    echo "<canvas id='chart_$question_id'></canvas>";
 
                     echo "<script>
                     document.addEventListener('DOMContentLoaded', function() {
@@ -203,10 +234,18 @@ if (!isset($questions) || !is_array($questions)) {
                                 plugins: {
                                     legend: {
                                         position: 'top',
+                                        labels: {
+                                            font: {
+                                                size: 16 // Increase label font size
+                                            }
+                                        }
                                     },
                                     title: {
                                         display: true,
-                                        text: 'Response Distribution'
+                                        text: 'Response Distribution',
+                                        font: {
+                                            size: 20 // Increase title font size
+                                        }
                                     }
                                 }
                             }
@@ -225,7 +264,9 @@ if (!isset($questions) || !is_array($questions)) {
 ?>
 <style>
     canvas{
-        height: 500px;
-        width: 500px;
+        height: 600px !important; 
+        width: 600px !important;
+        display: block; /* Centering the canvas */
+        margin: 0 auto; /* Centering the canvas */
     }
 </style>
