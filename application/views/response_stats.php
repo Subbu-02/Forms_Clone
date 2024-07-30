@@ -269,4 +269,11 @@ if (!isset($questions) || !is_array($questions)) {
         display: block; /* Centering the canvas */
         margin: 0 auto; /* Centering the canvas */
     }
+
+@media (max-width: 768px) {
+    canvas {
+        height: 300px !important; /* Shrinking the canvas height for smaller screens */
+        width: 300px !important; /* Shrinking the canvas width for smaller screens */
+    }
+}
 </style>
